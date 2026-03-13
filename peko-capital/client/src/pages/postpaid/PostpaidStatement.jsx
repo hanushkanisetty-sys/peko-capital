@@ -2,15 +2,43 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+const MOCK_DATA = {
+  period: 'January 2026',
+  paymentDueDate: '31 Jan 2026',
+  from: {
+    company: 'Peko Financial Services',
+    email: 'billing@peko.ae',
+    website: 'www.peko.ae',
+  },
+  billedTo: {
+    company: 'SAVOLL LLC',
+    address: 'Dubai, United Arab Emirates',
+    trn: '100234567800003',
+  },
+  accountSummary: {
+    openingBalance: 0,
+    amountPaid: 4400,
+    closingBalance: 2450,
+  },
+  transactions: [
+    { date: '15 Jan 2026', billType: 'Vendor Payment', merchant: 'Office Supplies Ltd', amount: 850 },
+    { date: '10 Jan 2026', billType: 'SaaS Subscription', merchant: 'Cloud Services Inc', amount: 1200 },
+    { date: '05 Jan 2026', billType: 'Marketing', merchant: 'Marketing Agency', amount: 400 },
+  ],
+  subtotal: 2450,
+  serviceFee: 0,
+  totalDue: 2450,
+};
+
 export default function PostpaidStatement() {
   const navigate = useNavigate();
   const location = useLocation();
   const isDownload = new URLSearchParams(location.search).get('view') === 'download';
-  const fromPay = location.state?.fromPay;
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(MOCK_DATA);
 
-  useEffect(() => { axios.get('/api/postpaid/statement').then(r => setData(r.data)); }, []);
-  if (!data) return <div style={{ color: '#6B7280' }}>Loading...</div>;
+  useEffect(() => {
+    axios.get('/api/postpaid/statement').then(r => setData(r.data)).catch(() => {});
+  }, []);
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>

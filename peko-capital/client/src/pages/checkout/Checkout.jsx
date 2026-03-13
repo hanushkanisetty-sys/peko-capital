@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
+const MOCK_POSTPAID_STATUS = {
+  eligible: true,
+  availableCredit: 47550,
+  currentMonthBill: 2450,
+  dueDate: '31 Jan 2026',
+};
+
 const payMethods = [
   { id: 'cashback', label: 'Use your cashback', sub: 'AED 100 available' },
   { id: 'card', label: 'Debit / Credit / ATM Cards', sub: 'Visa, Mastercard, Amex' },
@@ -16,11 +23,13 @@ export default function Checkout() {
   const location = useLocation();
   const { serviceName, company } = location.state || {};
   const [method, setMethod] = useState('card');
-  const [postpaidStatus, setPostpaidStatus] = useState(null);
+  const [postpaidStatus, setPostpaidStatus] = useState(MOCK_POSTPAID_STATUS);
   const [coupon, setCoupon] = useState('');
   const [billing, setBilling] = useState({ firstName: '', lastName: '', email: '', country: '', city: '', address: '' });
 
-  useEffect(() => { axios.get('/api/checkout/postpaid-status').then(r => setPostpaidStatus(r.data)); }, []);
+  useEffect(() => {
+    axios.get('/api/checkout/postpaid-status').then(r => setPostpaidStatus(r.data)).catch(() => {});
+  }, []);
 
   const setB = (k, v) => setBilling(b => ({ ...b, [k]: v }));
   const subtotal = 100, vat = 5, total = 105;

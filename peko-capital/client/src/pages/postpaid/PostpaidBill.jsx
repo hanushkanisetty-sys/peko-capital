@@ -2,12 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const MOCK_DATA = {
+  billingPeriod: 'Jan 2026',
+  totalTransactions: 3,
+  dueDate: '31 Jan 2026',
+  dueAmount: 2450,
+  invoiceItems: [
+    { date: '15 Jan 2026', name: 'Office Supplies Ltd', initials: 'OS', color: '#FF4B4B', amount: 850 },
+    { date: '10 Jan 2026', name: 'Cloud Services Inc', initials: 'CS', color: '#3B82F6', amount: 1200 },
+    { date: '05 Jan 2026', name: 'Marketing Agency', initials: 'MA', color: '#10B981', amount: 400 },
+  ],
+};
+
 export default function PostpaidBill() {
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(MOCK_DATA);
 
-  useEffect(() => { axios.get('/api/postpaid/bill').then(r => setData(r.data)); }, []);
-  if (!data) return <div style={{ color: '#6B7280' }}>Loading...</div>;
+  useEffect(() => {
+    axios.get('/api/postpaid/bill').then(r => setData(r.data)).catch(() => {});
+  }, []);
 
   const total = data.invoiceItems.reduce((s, i) => s + i.amount, 0);
 
@@ -25,7 +38,7 @@ export default function PostpaidBill() {
         </div>
       </div>
 
-<div className="card" style={{ padding: 20, marginBottom: 24 }}>
+      <div className="card" style={{ padding: 20, marginBottom: 24 }}>
         <div className="section-title" style={{ marginBottom: 16 }}>Invoice Details</div>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr><th>Date</th><th>Transaction Name</th><th style={{ textAlign: 'right' }}>Amount</th></tr></thead>

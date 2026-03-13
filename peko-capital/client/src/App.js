@@ -20,33 +20,64 @@ import PostpaidProcessing from './pages/checkout/PostpaidProcessing';
 import PostpaidSuccess from './pages/checkout/PostpaidSuccess';
 import CheckoutSuccess from './pages/checkout/CheckoutSuccess';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: 40, textAlign: 'center' }}>
+          <h2 style={{ fontWeight: 700, marginBottom: 12 }}>Something went wrong</h2>
+          <p style={{ color: '#6B7280', marginBottom: 20 }}>Please refresh the page or try again later.</p>
+          <button
+            style={{ background: '#FF4B4B', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 600 }}
+            onClick={() => this.setState({ hasError: false })}
+          >
+            Try Again
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <ToastProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="capital" element={<CapitalLanding />} />
-          <Route path="capital/eligibility" element={<EligibilityForm />} />
-          <Route path="capital/eligible" element={<EligibleScreen />} />
-          <Route path="capital/not-eligible" element={<NotEligibleScreen />} />
-          <Route path="capital/dashboard" element={<CapitalDashboard />} />
-          <Route path="postpaid" element={<PostpaidDashboard />} />
-          <Route path="postpaid/bill" element={<PostpaidBill />} />
-          <Route path="postpaid/statement" element={<PostpaidStatement />} />
-          <Route path="postpaid/pay-bill" element={<PostpaidPayBill />} />
-          <Route path="postpaid/pay-bill-success" element={<PostpaidPayBillSuccess />} />
-          <Route path="bill-payments" element={<BillPayments />} />
-          <Route path="checkout" element={<Checkout />} />
-          <Route path="checkout/postpaid-confirm" element={<PostpaidConfirm />} />
-          <Route path="checkout/postpaid-processing" element={<PostpaidProcessing />} />
-          <Route path="checkout/postpaid-success" element={<PostpaidSuccess />} />
-          <Route path="checkout/success" element={<CheckoutSuccess />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-    </ToastProvider>
+    <ErrorBoundary>
+      <ToastProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="capital" element={<CapitalLanding />} />
+              <Route path="capital/eligibility" element={<EligibilityForm />} />
+              <Route path="capital/eligible" element={<EligibleScreen />} />
+              <Route path="capital/not-eligible" element={<NotEligibleScreen />} />
+              <Route path="capital/dashboard" element={<CapitalDashboard />} />
+              <Route path="postpaid" element={<PostpaidDashboard />} />
+              <Route path="postpaid/bill" element={<PostpaidBill />} />
+              <Route path="postpaid/statement" element={<PostpaidStatement />} />
+              <Route path="postpaid/pay-bill" element={<PostpaidPayBill />} />
+              <Route path="postpaid/pay-bill-success" element={<PostpaidPayBillSuccess />} />
+              <Route path="bill-payments" element={<BillPayments />} />
+              <Route path="checkout" element={<Checkout />} />
+              <Route path="checkout/postpaid-confirm" element={<PostpaidConfirm />} />
+              <Route path="checkout/postpaid-processing" element={<PostpaidProcessing />} />
+              <Route path="checkout/postpaid-success" element={<PostpaidSuccess />} />
+              <Route path="checkout/success" element={<CheckoutSuccess />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }

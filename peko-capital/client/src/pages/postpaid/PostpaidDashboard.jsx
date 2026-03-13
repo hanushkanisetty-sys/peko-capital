@@ -2,14 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const MOCK_DATA = {
+  totalTransactions: 8,
+  totalSpent: 6850,
+  remainingCredit: '43150',
+  thisMonthTotal: '2450',
+  currentMonthAmount: 2450,
+  transactions: [
+    { id: 1, date: '15 Jan 2026', invoiceNumber: 'INV-001', merchant: 'Office Supplies Ltd', category: 'Office', amount: '850', status: 'Paid' },
+    { id: 2, date: '10 Jan 2026', invoiceNumber: 'INV-002', merchant: 'Cloud Services Inc', category: 'Tech', amount: '1200', status: 'Paid' },
+    { id: 3, date: '05 Jan 2026', invoiceNumber: 'INV-003', merchant: 'Marketing Agency', category: 'Marketing', amount: '400', status: 'Pending' },
+  ],
+  statements: [
+    { id: 1, date: 'Dec 2025', name: 'December 2025 Statement', amount: '4400', status: 'Paid' },
+    { id: 2, date: 'Jan 2026', name: 'January 2026 Statement', amount: '2450', status: 'Pending' },
+  ],
+};
+
 export default function PostpaidDashboard() {
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(MOCK_DATA);
   const [txSearch, setTxSearch] = useState('');
   const [stSearch, setStSearch] = useState('');
 
-  useEffect(() => { axios.get('/api/postpaid/dashboard').then(r => setData(r.data)); }, []);
-  if (!data) return <div style={{ color: '#6B7280' }}>Loading...</div>;
+  useEffect(() => {
+    axios.get('/api/postpaid/dashboard').then(r => setData(r.data)).catch(() => {});
+  }, []);
 
   const stats = [
     { label: 'Total Transactions', value: data.totalTransactions, cls: 'stat-peach' },

@@ -5,14 +5,41 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 const PIE_COLORS = ['#FF4B4B', '#3B82F6', '#10B981'];
 
+const MOCK_DATA = {
+  totalPayments: 24500,
+  activeProducts: 1,
+  upcomingPayments: 2450,
+  availableCredit: 47550,
+  totalCredit: 50000,
+  recentActivity: [
+    { date: '15 Jan 2026', product: 'PostPaid', description: 'Office Supplies Ltd', amount: 850, status: 'Paid' },
+    { date: '10 Jan 2026', product: 'PostPaid', description: 'Cloud Services Inc', amount: 1200, status: 'Paid' },
+    { date: '05 Jan 2026', product: 'PostPaid', description: 'Marketing Agency', amount: 400, status: 'Paid' },
+  ],
+  chartData: [
+    { month: 'Aug', amount: 3200 },
+    { month: 'Sep', amount: 4100 },
+    { month: 'Oct', amount: 3800 },
+    { month: 'Nov', amount: 5200 },
+    { month: 'Dec', amount: 6100 },
+    { month: 'Jan', amount: 2450 },
+  ],
+  productUsage: [
+    { name: 'PostPaid', value: 100 },
+    { name: 'Peko Flex', value: 0 },
+    { name: 'Peko Fast', value: 0 },
+  ],
+};
+
 export default function CapitalDashboard() {
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(MOCK_DATA);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
 
-  useEffect(() => { axios.get('/api/capital/dashboard').then(r => setData(r.data)); }, []);
-  if (!data) return <div style={{ color: '#6B7280' }}>Loading...</div>;
+  useEffect(() => {
+    axios.get('/api/capital/dashboard').then(r => setData(r.data)).catch(() => {});
+  }, []);
 
   const stats = [
     { label: 'Total Payments', value: `AED ${data.totalPayments.toLocaleString()}`, cls: 'stat-peach' },
@@ -20,7 +47,6 @@ export default function CapitalDashboard() {
     { label: 'Upcoming Payments', value: `AED ${data.upcomingPayments.toLocaleString()}`, cls: 'stat-blue' },
     { label: 'Available Credit', value: `AED ${data.availableCredit.toLocaleString()}`, sub: `of AED ${data.totalCredit.toLocaleString()}`, cls: 'stat-green' },
   ];
-
 
   const filtered = data.recentActivity.filter(r =>
     (!category || r.product === category) &&
