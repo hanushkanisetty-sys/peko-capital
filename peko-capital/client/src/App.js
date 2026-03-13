@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastProvider } from './components/ToastContext';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import CapitalLanding from './pages/capital/CapitalLanding';
@@ -21,6 +22,7 @@ import CheckoutSuccess from './pages/checkout/CheckoutSuccess';
 
 export default function App() {
   return (
+    <ToastProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -45,5 +47,6 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+    </ToastProvider>
   );
 }
