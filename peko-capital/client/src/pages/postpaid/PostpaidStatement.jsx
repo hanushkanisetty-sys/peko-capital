@@ -67,15 +67,15 @@ export default function PostpaidStatement() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, marginBottom: 28 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: 8 }}>From</div>
-            <div style={{ fontWeight: 600 }}>{data.from.company}</div>
-            <div style={{ color: '#6B7280', fontSize: 13 }}>{data.from.email}</div>
-            <div style={{ color: '#6B7280', fontSize: 13 }}>{data.from.website}</div>
+            <div style={{ fontWeight: 600 }}>{data?.from?.company}</div>
+            <div style={{ color: '#6B7280', fontSize: 13 }}>{data?.from?.email}</div>
+            <div style={{ color: '#6B7280', fontSize: 13 }}>{data?.from?.website}</div>
           </div>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: 8 }}>Billed To</div>
-            <div style={{ fontWeight: 600 }}>{data.billedTo.company}</div>
-            <div style={{ color: '#6B7280', fontSize: 13 }}>{data.billedTo.address}</div>
-            <div style={{ color: '#6B7280', fontSize: 13 }}>TRN: {data.billedTo.trn}</div>
+            <div style={{ fontWeight: 600 }}>{data?.billedTo?.company}</div>
+            <div style={{ color: '#6B7280', fontSize: 13 }}>{data?.billedTo?.address}</div>
+            <div style={{ color: '#6B7280', fontSize: 13 }}>TRN: {data?.billedTo?.trn}</div>
           </div>
         </div>
 
@@ -86,9 +86,9 @@ export default function PostpaidStatement() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <tbody>
               {[
-                ['Opening Balance', `AED ${data.accountSummary.openingBalance.toLocaleString()}`],
-                ['Amount Paid', `AED ${data.accountSummary.amountPaid.toLocaleString()}`],
-                ['Closing Balance', `AED ${data.accountSummary.closingBalance.toLocaleString()}`],
+                ['Opening Balance', `AED ${(data?.accountSummary?.openingBalance || 0).toLocaleString()}`],
+                ['Amount Paid', `AED ${(data?.accountSummary?.amountPaid || 0).toLocaleString()}`],
+                ['Closing Balance', `AED ${(data?.accountSummary?.closingBalance || 0).toLocaleString()}`],
               ].map(([l, v]) => (
                 <tr key={l}><td style={{ padding: '8px 0', color: '#6B7280', fontSize: 13 }}>{l}</td><td style={{ textAlign: 'right', fontWeight: 500 }}>{v}</td></tr>
               ))}
@@ -103,7 +103,7 @@ export default function PostpaidStatement() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead><tr><th style={{ textAlign: 'left', paddingBottom: 8, color: '#9CA3AF', fontSize: 12, fontWeight: 600 }}>Date</th><th style={{ color: '#9CA3AF', fontSize: 12, fontWeight: 600 }}>Bill Type</th><th style={{ color: '#9CA3AF', fontSize: 12, fontWeight: 600 }}>Merchant</th><th style={{ textAlign: 'right', color: '#9CA3AF', fontSize: 12, fontWeight: 600 }}>Amount</th></tr></thead>
             <tbody>
-              {data.transactions.map((t, i) => (
+              {(data?.transactions || []).map((t, i) => (
                 <tr key={i} style={{ borderTop: '1px solid #F9FAFB' }}>
                   <td style={{ padding: '10px 0', fontSize: 13 }}>{t.date}</td>
                   <td style={{ fontSize: 13 }}>{t.billType}</td>
@@ -119,8 +119,8 @@ export default function PostpaidStatement() {
 
         <div style={{ textAlign: 'right' }}>
           {[
-            ['Subtotal', `AED ${data.subtotal.toLocaleString()}`],
-            ['Service Fee', `AED ${data.serviceFee.toLocaleString()}`],
+            ['Subtotal', `AED ${(data?.subtotal || 0).toLocaleString()}`],
+            ['Service Fee', `AED ${(data?.serviceFee || 0).toLocaleString()}`],
           ].map(([l, v]) => (
             <div key={l} style={{ display: 'flex', justifyContent: 'flex-end', gap: 32, marginBottom: 6 }}>
               <span style={{ color: '#6B7280', fontSize: 13 }}>{l}</span>
@@ -129,7 +129,7 @@ export default function PostpaidStatement() {
           ))}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 32, marginTop: 8, paddingTop: 8, borderTop: '2px solid #1A1A1A' }}>
             <span style={{ fontWeight: 700 }}>Total Due</span>
-            <span style={{ fontWeight: 800, fontSize: 18, minWidth: 100, textAlign: 'right' }}>AED {data.totalDue.toLocaleString()}</span>
+            <span style={{ fontWeight: 800, fontSize: 18, minWidth: 100, textAlign: 'right' }}>AED {(data?.totalDue || 0).toLocaleString()}</span>
           </div>
         </div>
 

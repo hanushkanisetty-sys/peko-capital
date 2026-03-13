@@ -22,7 +22,7 @@ export default function PostpaidBill() {
     axios.get('/api/postpaid/bill').then(r => setData(r.data)).catch(() => {});
   }, []);
 
-  const total = data.invoiceItems.reduce((s, i) => s + i.amount, 0);
+  const total = (data?.invoiceItems || []).reduce((s, i) => s + i.amount, 0);
 
   return (
     <div style={{ maxWidth: 680, margin: '0 auto' }}>
@@ -43,7 +43,7 @@ export default function PostpaidBill() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr><th>Date</th><th>Transaction Name</th><th style={{ textAlign: 'right' }}>Amount</th></tr></thead>
           <tbody>
-            {data.invoiceItems.map((item, i) => (
+            {(data?.invoiceItems || []).map((item, i) => (
               <tr key={i}>
                 <td>{item.date}</td>
                 <td>

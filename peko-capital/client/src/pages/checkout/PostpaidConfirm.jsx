@@ -24,7 +24,7 @@ export default function PostpaidConfirm() {
     axios.get('/api/checkout/postpaid-status').then(r => setStatus(r.data)).catch(() => {});
   }, []);
 
-  const newTotal = status.currentMonthBill + txAmount;
+  const newTotal = (status?.currentMonthBill || 0) + txAmount;
 
   const confirm = async () => {
     setConfirming(true);
@@ -85,8 +85,8 @@ export default function PostpaidConfirm() {
 
           <div className="section-title" style={{ marginBottom: 12 }}>Post Paid Balance Impact</div>
           {[
-            ['Available Credit', `AED ${status.availableCredit.toLocaleString()}`, null],
-            ['Current month bill', `AED ${status.currentMonthBill.toLocaleString()}`, null],
+            ['Available Credit', `AED ${(status?.availableCredit || 0).toLocaleString()}`, null],
+            ['Current month bill', `AED ${(status?.currentMonthBill || 0).toLocaleString()}`, null],
             ['Transaction Amount', `+AED ${txAmount.toLocaleString()}`, '#16A34A'],
             ['New Total Bill', `AED ${newTotal.toLocaleString()}`, null],
           ].map(([l, v, c]) => (
@@ -97,7 +97,7 @@ export default function PostpaidConfirm() {
           ))}
 
           <div className="info-box info-box-yellow" style={{ marginTop: 16, marginBottom: 20 }}>
-            ⚠ Payment due date: <strong>{status.dueDate}</strong>
+            ⚠ Payment due date: <strong>{status?.dueDate}</strong>
           </div>
 
           <button className="btn btn-primary btn-full" onClick={confirm} disabled={confirming}>

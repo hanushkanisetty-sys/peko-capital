@@ -42,13 +42,13 @@ export default function CapitalDashboard() {
   }, []);
 
   const stats = [
-    { label: 'Total Payments', value: `AED ${data.totalPayments.toLocaleString()}`, cls: 'stat-peach' },
-    { label: 'Active Products', value: data.activeProducts, cls: 'stat-light' },
-    { label: 'Upcoming Payments', value: `AED ${data.upcomingPayments.toLocaleString()}`, cls: 'stat-blue' },
-    { label: 'Available Credit', value: `AED ${data.availableCredit.toLocaleString()}`, sub: `of AED ${data.totalCredit.toLocaleString()}`, cls: 'stat-green' },
+    { label: 'Total Payments', value: `AED ${(data?.totalPayments || 0).toLocaleString()}`, cls: 'stat-peach' },
+    { label: 'Active Products', value: data?.activeProducts ?? 0, cls: 'stat-light' },
+    { label: 'Upcoming Payments', value: `AED ${(data?.upcomingPayments || 0).toLocaleString()}`, cls: 'stat-blue' },
+    { label: 'Available Credit', value: `AED ${(data?.availableCredit || 0).toLocaleString()}`, sub: `of AED ${(data?.totalCredit || 0).toLocaleString()}`, cls: 'stat-green' },
   ];
 
-  const filtered = data.recentActivity.filter(r =>
+  const filtered = (data?.recentActivity || []).filter(r =>
     (!category || r.product === category) &&
     (!search || r.description.toLowerCase().includes(search.toLowerCase()))
   );
@@ -152,7 +152,7 @@ export default function CapitalDashboard() {
         <div className="card" style={{ padding: 20 }}>
           <div className="section-title" style={{ marginBottom: 16 }}>Payments Over Time</div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={data.chartData}>
+            <LineChart data={data?.chartData || []}>
               <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} />
@@ -165,8 +165,8 @@ export default function CapitalDashboard() {
           <div className="section-title" style={{ marginBottom: 16 }}>Product Usage</div>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Pie data={data.productUsage} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
-                {data.productUsage.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+              <Pie data={data?.productUsage || []} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
+                {(data?.productUsage || []).map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
               </Pie>
               <Legend />
               <Tooltip />
