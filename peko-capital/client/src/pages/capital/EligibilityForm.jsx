@@ -1,28 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export default function EligibilityForm() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ fundsRaised: '', amount: '', uaeRegistered: '', vatRegistered: '' });
-  const [loading, setLoading] = useState(false);
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
-  const submit = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.post('/api/eligibility/check', {
-        uaeRegistered: form.uaeRegistered === 'yes',
-        vatRegistered: form.vatRegistered === 'yes',
-        fundsRaised: form.fundsRaised,
-        amount: form.amount,
-      });
-      navigate(data.eligible ? '/capital/eligible' : '/capital/not-eligible');
-    } catch {
+  const submit = () => {
+    if (form.uaeRegistered === 'yes') {
+      navigate('/capital/eligible');
+    } else {
       navigate('/capital/not-eligible');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -84,8 +73,8 @@ export default function EligibilityForm() {
         </div>
 
         <div style={{ display: 'flex', gap: 12 }}>
-          <button className="btn btn-primary flex-1" style={{ flex: 1 }} onClick={submit} disabled={loading}>
-            {loading ? 'Checking...' : 'Check Your Eligibility'}
+          <button className="btn btn-primary flex-1" style={{ flex: 1 }} onClick={submit}>
+            Check Your Eligibility
           </button>
           <button className="btn btn-outline" onClick={() => navigate('/capital')}>Go back</button>
         </div>
