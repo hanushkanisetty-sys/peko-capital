@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 
 const TYPE_COLORS = {
   payment:     { border: '#16A34A', bg: '#F0FFF4' },
@@ -17,21 +16,16 @@ function timeAgo(isoString) {
 }
 
 export default function Header() {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([
+    { id: 1, type: 'payment', title: 'Payment Added to PostPaid', message: 'Your DEWA payment of AED 789 has been added to your January 2026 PostPaid bill.', timestamp: new Date(Date.now() - 7200000), read: false },
+    { id: 2, type: 'bill', title: 'Bill Due Soon', message: 'Your January 2026 PostPaid bill of AED 2,459 is due on 31 January 2026.', timestamp: new Date(Date.now() - 86400000), read: false },
+    { id: 3, type: 'eligibility', title: 'Eligibility Approved', message: 'Congratulations! You have been approved for Peko PostPaid with a credit limit of AED 50,000.', timestamp: new Date(Date.now() - 172800000), read: false },
+    { id: 4, type: 'system', title: 'Payment Completed', message: 'Your payment to City Power Company of AED 789 was completed successfully.', timestamp: new Date(Date.now() - 259200000), read: true }
+  ]);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const unread = notifications.filter(n => !n.read).length;
-
-  const fetchNotifications = () => {
-    axios.get('/api/notifications').then(r => setNotifications(r.data)).catch(() => {});
-  };
-
-  useEffect(() => {
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, 15000);
-    return () => clearInterval(interval);
-  }, []);
+  const unread = (notifications || []).filter(n => !n.read).length;
 
   // Close on outside click
   useEffect(() => {
@@ -44,13 +38,11 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const markRead = async (id) => {
-    await axios.post(`/api/notifications/read/${id}`).catch(() => {});
+  const markRead = (id) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   };
 
-  const markAllRead = async () => {
-    await axios.post('/api/notifications/read-all').catch(() => {});
+  const markAllRead = () => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
 
