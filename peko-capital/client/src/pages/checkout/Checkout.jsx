@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+// Mock: simulate user's PostPaid account status
+// Possible values: 'none' | 'active' | 'blocked'
+const userPostPaidStatus = 'active';
+
 const POSTPAID_INELIGIBLE = ['Salik', 'Dubai Police Fines', 'ADDC', 'Water Bill', 'Internet Bill'];
 
 const payMethods = [
@@ -43,18 +47,64 @@ export default function Checkout() {
             <div className="section-title" style={{ marginBottom: 16 }}>Select Payment Method</div>
             {payMethods.map(m => {
               const isPostpaid = m.id === 'postpaid';
-              const disabled = isPostpaid && !ppEligible;
+
+              // Determine PostPaid state
+              // STATE 2: service not eligible (any account status)
+              // STATE 1: eligible + no account
+              // STATE 3: eligible + active
+              // STATE 4: eligible + blocked
+              let ppState = null;
+              if (isPostpaid) {
+                if (!ppEligible) ppState = 'ineligible';
+                else if (userPostPaidStatus === 'none') ppState = 'no-account';
+                else if (userPostPaidStatus === 'active') ppState = 'active';
+                else if (userPostPaidStatus === 'blocked') ppState = 'blocked';
+              }
+
+              const disabled = isPostpaid && ppState !== 'active';
+              const sub = isPostpaid && ppState === 'active' ? 'AED 100 · Pay by 31 Jan 2026' : m.sub;
+
               return (
                 <div key={m.id} style={{ marginBottom: 12 }}>
                   <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, cursor: disabled ? 'not-allowed' : 'pointer', opacity: disabled ? 0.5 : 1 }}>
                     <input type="radio" name="pay" value={m.id} checked={method === m.id} onChange={() => !disabled && setMethod(m.id)} style={{ marginTop: 3, accentColor: '#FF4B4B' }} disabled={disabled} />
                     <div>
                       <div style={{ fontWeight: 500, fontSize: 14 }}>{m.label}</div>
-                      {m.sub && <div style={{ fontSize: 12, color: '#9CA3AF' }}>{m.sub}</div>}
-                      {isPostpaid && ppEligible && <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>Pay by 31 Jan 2026</div>}
-                      {isPostpaid && !ppEligible && (
+                      {sub && <div style={{ fontSize: 12, color: '#9CA3AF' }}>{sub}</div>}
+
+                      {/* STATE 2: ineligible service */}
+                      {ppState === 'ineligible' && (
                         <div className="info-box info-box-yellow" style={{ marginTop: 6, fontSize: 12 }}>
                           This service is not eligible for Post Paid
+                        </div>
+                      )}
+
+                      {/* STATE 1: eligible but no PostPaid account */}
+                      {ppState === 'no-account' && (
+                        <div className="info-box info-box-yellow" style={{ marginTop: 6, fontSize: 12 }}>
+                          <span>You don't have a PostPaid account yet. </span>
+                          <span
+                            onClick={() => navigate('/capital')}
+                            style={{ color: '#FF4B4B', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}
+                          >
+                            Apply Now
+                          </span>
+                        </div>
+                      )}
+
+                      {/* STATE 4: eligible but account blocked */}
+                      {ppState === 'blocked' && (
+                        <div className="info-box info-box-red" style={{ marginTop: 6, fontSize: 12 }}>
+                          <div>Your PostPaid bill is overdue. This service is unavailable.</div>
+                          <div style={{ marginTop: 4 }}>
+                            <span
+                              onClick={() => navigate('/postpaid/pay-bill')}
+                              style={{ color: '#FF4B4B', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}
+                            >
+                              Pay Now
+                            </span>
+                            <span> · Clear your due amount to continue using PostPaid.</span>
+                          </div>
                         </div>
                       )}
                     </div>
