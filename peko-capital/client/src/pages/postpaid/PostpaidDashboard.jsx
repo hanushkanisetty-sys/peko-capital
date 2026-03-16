@@ -89,7 +89,7 @@ export default function PostpaidDashboard() {
                   <td>{t.category}</td>
                   <td style={{ fontWeight: 600 }}>AED {t.amount}</td>
                   <td><span className={`badge ${statusBadge(t.status)}`}>{t.status}</span></td>
-                  <td><button className="btn btn-outline-red btn-sm" onClick={() => navigate('/postpaid/bill')}>View</button></td>
+                  <td><button className="btn btn-outline-red btn-sm" onClick={() => navigate(`/postpaid/transaction/${t.id}`, { state: t })}>View</button></td>
                   <td><button className="btn btn-outline btn-sm">⬇</button></td>
                 </tr>
               ))}
@@ -118,7 +118,7 @@ export default function PostpaidDashboard() {
                   <td>{s.name}</td>
                   <td style={{ fontWeight: 600 }}>AED {s.amount}</td>
                   <td><span className={`badge ${statusBadge(s.status)}`}>{s.status}</span></td>
-                  <td><button className="btn btn-outline-red btn-sm" onClick={() => navigate('/postpaid/statement')}>View</button></td>
+                  <td><button className="btn btn-outline-red btn-sm" onClick={() => navigate('/postpaid/statement', { state: s })}>View</button></td>
                   <td><button className="btn btn-outline btn-sm">⬇</button></td>
                 </tr>
               ))}

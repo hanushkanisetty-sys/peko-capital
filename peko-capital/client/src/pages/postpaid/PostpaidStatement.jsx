@@ -35,7 +35,15 @@ export default function PostpaidStatement() {
   const navigate = useNavigate();
   const location = useLocation();
   const isDownload = new URLSearchParams(location.search).get('view') === 'download';
-  const [data] = useState(MOCK_DATA);
+  const stateData = location.state;
+  const [data] = useState(stateData ? {
+    ...MOCK_DATA,
+    period: stateData.name || stateData.date || MOCK_DATA.period,
+    accountSummary: {
+      ...MOCK_DATA.accountSummary,
+      closingBalance: parseFloat((stateData.amount || '').replace(',', '')) || MOCK_DATA.accountSummary.closingBalance,
+    },
+  } : MOCK_DATA);
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>

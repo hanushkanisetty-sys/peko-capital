@@ -11,6 +11,7 @@ import CapitalDashboard from './pages/capital/CapitalDashboard';
 import PostpaidDashboard from './pages/postpaid/PostpaidDashboard';
 import PostpaidBill from './pages/postpaid/PostpaidBill';
 import PostpaidStatement from './pages/postpaid/PostpaidStatement';
+import PostpaidTransactionDetail from './pages/postpaid/PostpaidTransactionDetail';
 import PostpaidPayBill from './pages/postpaid/PostpaidPayBill';
 import PostpaidPayBillSuccess from './pages/postpaid/PostpaidPayBillSuccess';
 import BillPayments from './pages/BillPayments';
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="capital/not-eligible" element={<NotEligibleScreen />} />
             <Route path="capital/dashboard" element={<CapitalDashboard />} />
             <Route path="postpaid" element={<PostpaidDashboard />} />
+            <Route path="postpaid/transaction/:id" element={<PostpaidTransactionDetail />} />
             <Route path="postpaid/bill" element={<PostpaidBill />} />
             <Route path="postpaid/statement" element={<PostpaidStatement />} />
             <Route path="postpaid/pay-bill" element={<PostpaidPayBill />} />
