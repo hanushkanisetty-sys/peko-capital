@@ -15,8 +15,9 @@ const MOCK_DATA = {
     { id: 5, date: '05 Jan 2026', invoiceNumber: 'INV-005', merchant: 'Salik', category: 'Toll', amount: '500', status: 'Paid' },
   ],
   statements: [
-    { id: 1, date: 'Jan 2026', name: 'January 2026 Statement', amount: '2,459', status: 'Due' },
-    { id: 2, date: 'Dec 2025', name: 'December 2025 Statement', amount: '1,850', status: 'Paid' },
+    { id: 1, period: '01 Jan 2026 – 31 Jan 2026', name: 'January 2026', amount: 'AED 2,459', status: 'Due' },
+    { id: 2, period: '01 Dec 2025 – 31 Dec 2025', name: 'December 2025', amount: 'AED 1,850', status: 'Paid' },
+    { id: 3, period: '01 Nov 2025 – 30 Nov 2025', name: 'November 2025', amount: 'AED 2,100', status: 'Paid' },
   ],
 };
 
@@ -78,7 +79,7 @@ export default function PostpaidDashboard() {
         <div className="table-wrap">
           <table>
             <thead>
-              <tr><th>Date</th><th>Invoice #</th><th>Merchant</th><th>Category</th><th>Amount</th><th>Status</th><th>View Bill</th><th>Download</th></tr>
+              <tr><th>Date</th><th>Invoice #</th><th>Merchant</th><th>Category</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
             </thead>
             <tbody>
               {filteredTx.map(t => (
@@ -90,7 +91,6 @@ export default function PostpaidDashboard() {
                   <td style={{ fontWeight: 600 }}>AED {t.amount}</td>
                   <td><span className={`badge ${statusBadge(t.status)}`}>{t.status}</span></td>
                   <td><button className="btn btn-outline-red btn-sm" onClick={() => navigate(`/postpaid/transaction/${t.id}`, { state: t })}>View</button></td>
-                  <td><button className="btn btn-outline btn-sm">⬇</button></td>
                 </tr>
               ))}
             </tbody>
@@ -109,17 +109,23 @@ export default function PostpaidDashboard() {
         <div className="table-wrap">
           <table>
             <thead>
-              <tr><th>Date</th><th>Statement Name</th><th>Amount</th><th>Status</th><th>View Statement</th><th>Download</th></tr>
+              <tr><th>Period</th><th>Statement Name</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
             </thead>
             <tbody>
               {filteredSt.map(s => (
                 <tr key={s.id}>
-                  <td>{s.date}</td>
+                  <td>{s.period}</td>
                   <td>{s.name}</td>
-                  <td style={{ fontWeight: 600 }}>AED {s.amount}</td>
+                  <td style={{ fontWeight: 600 }}>{s.amount}</td>
                   <td><span className={`badge ${statusBadge(s.status)}`}>{s.status}</span></td>
-                  <td><button className="btn btn-outline-red btn-sm" onClick={() => navigate('/postpaid/statement', { state: s })}>View</button></td>
-                  <td><button className="btn btn-outline btn-sm">⬇</button></td>
+                  <td>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      {(s.status === 'Due' || s.status === 'Unpaid') && (
+                        <button className="btn btn-primary btn-sm" onClick={() => navigate('/postpaid/pay-bill')}>Pay Now</button>
+                      )}
+                      <button className="btn btn-outline btn-sm" onClick={() => navigate('/postpaid/statement', { state: s })}>⬇ Download</button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

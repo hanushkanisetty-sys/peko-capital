@@ -34,14 +34,14 @@ const MOCK_DATA = {
 export default function PostpaidStatement() {
   const navigate = useNavigate();
   const location = useLocation();
-  const isDownload = new URLSearchParams(location.search).get('view') === 'download';
   const stateData = location.state;
+  const statementStatus = stateData?.status || 'Due';
   const [data] = useState(stateData ? {
     ...MOCK_DATA,
-    period: stateData.name || stateData.date || MOCK_DATA.period,
+    period: stateData.name || stateData.period || MOCK_DATA.period,
     accountSummary: {
       ...MOCK_DATA.accountSummary,
-      closingBalance: parseFloat((stateData.amount || '').replace(',', '')) || MOCK_DATA.accountSummary.closingBalance,
+      closingBalance: parseFloat((stateData.amount || '').replace(/[^0-9.]/g, '')) || MOCK_DATA.accountSummary.closingBalance,
     },
   } : MOCK_DATA);
 
@@ -139,17 +139,19 @@ export default function PostpaidStatement() {
         </div>
 
         {/* Actions */}
-        <div style={{ marginTop: 28 }}>
-          {isDownload ? (
-            <div style={{ display: 'flex', gap: 12 }}>
-              <button className="btn btn-primary" style={{ flex: 1 }}>Download</button>
-              <button className="btn btn-outline" style={{ flex: 1 }}>Share</button>
-            </div>
-          ) : (
-            <button className="btn btn-primary btn-full" onClick={() => navigate('/checkout')}>
+        <div style={{ marginTop: 28, display: 'flex', gap: 12 }}>
+          {statementStatus === 'Due' && (
+            <button className="btn btn-primary" style={{ flex: 1 }} onClick={() => navigate('/postpaid/pay-bill')}>
               Pay Now
             </button>
           )}
+          <button
+            className="btn btn-outline-red"
+            style={{ flex: 1 }}
+            onClick={() => alert('Downloading statement PDF...')}
+          >
+            ⬇ Download
+          </button>
         </div>
       </div>
     </div>
