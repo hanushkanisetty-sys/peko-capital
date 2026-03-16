@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const MOCK_DATA = {
-  billingPeriod: 'Jan 2026',
-  totalTransactions: 3,
-  dueDate: '31 Jan 2026',
-  dueAmount: 2450,
+  billingPeriod: 'January 2026',
+  totalTransactions: 5,
+  dueDate: '31 January 2026',
+  dueAmount: 2459,
   invoiceItems: [
-    { date: '15 Jan 2026', name: 'Office Supplies Ltd', initials: 'OS', color: '#FF4B4B', amount: 850 },
-    { date: '10 Jan 2026', name: 'Cloud Services Inc', initials: 'CS', color: '#3B82F6', amount: 1200 },
-    { date: '05 Jan 2026', name: 'Marketing Agency', initials: 'MA', color: '#10B981', amount: 400 },
+    { date: '15 Jan 2026', name: 'DEWA', initials: 'DE', color: '#FF4B4B', amount: 789 },
+    { date: '12 Jan 2026', name: 'Etisalat', initials: 'ET', color: '#3B82F6', amount: 450 },
+    { date: '10 Jan 2026', name: 'Dubai Police', initials: 'DP', color: '#10B981', amount: 400 },
+    { date: '08 Jan 2026', name: 'du Telecom', initials: 'DU', color: '#F59E0B', amount: 320 },
+    { date: '05 Jan 2026', name: 'Salik', initials: 'SA', color: '#8B5CF6', amount: 500 },
   ],
 };
 
 export default function PostpaidBill() {
   const navigate = useNavigate();
-  const [data, setData] = useState(MOCK_DATA);
+  const [data] = useState(MOCK_DATA);
 
-  useEffect(() => {
-    axios.get('/api/postpaid/bill').then(r => setData(r.data)).catch(() => {});
-  }, []);
-
-  const total = (data?.invoiceItems || []).reduce((s, i) => s + i.amount, 0);
+  const total = data.invoiceItems.reduce((s, i) => s + i.amount, 0);
 
   return (
     <div style={{ maxWidth: 680, margin: '0 auto' }}>
@@ -34,7 +31,7 @@ export default function PostpaidBill() {
         <div className="card stat-card stat-peach">
           <div className="stat-label">Payment Due Date</div>
           <div style={{ fontWeight: 700, fontSize: 13, marginTop: 4 }}>{data.dueDate}</div>
-          <div style={{ fontWeight: 800, color: '#FF4B4B', fontSize: 18 }}>AED {data.dueAmount}</div>
+          <div style={{ fontWeight: 800, color: '#FF4B4B', fontSize: 18 }}>AED {data.dueAmount.toLocaleString()}</div>
         </div>
       </div>
 
@@ -43,7 +40,7 @@ export default function PostpaidBill() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr><th>Date</th><th>Transaction Name</th><th style={{ textAlign: 'right' }}>Amount</th></tr></thead>
           <tbody>
-            {(data?.invoiceItems || []).map((item, i) => (
+            {data.invoiceItems.map((item, i) => (
               <tr key={i}>
                 <td>{item.date}</td>
                 <td>
@@ -63,7 +60,7 @@ export default function PostpaidBill() {
         <div className="section-title" style={{ marginBottom: 16 }}>Payment Details</div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
           <span style={{ color: '#6B7280' }}>Total Amount Due</span>
-          <span style={{ fontWeight: 700, fontSize: 18 }}>AED {total}</span>
+          <span style={{ fontWeight: 700, fontSize: 18 }}>AED {total.toLocaleString()}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
           <span style={{ color: '#6B7280' }}>Payment Due</span>

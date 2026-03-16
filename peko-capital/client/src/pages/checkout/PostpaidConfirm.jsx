@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
 
 const MOCK_STATUS = {
   eligible: true,
-  availableCredit: 47550,
-  currentMonthBill: 2450,
+  availableCredit: 47541,
+  currentMonthBill: 2459,
   dueDate: '31 Jan 2026',
 };
 
@@ -14,49 +13,26 @@ export default function PostpaidConfirm() {
   const location = useLocation();
   const { serviceName, company, amount: passedAmount } = location.state || {};
 
-  const [status, setStatus] = useState(MOCK_STATUS);
+  const [status] = useState(MOCK_STATUS);
   const [confirming, setConfirming] = useState(false);
 
-  const merchantName = company || serviceName || 'Office Supplies Ltd';
+  const merchantName = company || serviceName || 'DEWA';
   const txAmount = passedAmount || 100;
 
-  useEffect(() => {
-    axios.get('/api/checkout/postpaid-status').then(r => setStatus(r.data)).catch(() => {});
-  }, []);
+  const newTotal = (status.currentMonthBill || 0) + txAmount;
 
-  const newTotal = (status?.currentMonthBill || 0) + txAmount;
-
-  const confirm = async () => {
+  const confirm = () => {
     setConfirming(true);
-    try {
-      const { data } = await axios.post('/api/postpaid/confirm-payment', {
+    navigate('/checkout/postpaid-processing', {
+      state: {
         merchantName,
-        category: serviceName || 'General',
-        amount: txAmount,
-      });
-      navigate('/checkout/postpaid-processing', {
-        state: {
-          merchantName,
-          txAmount,
-          transactionId: data.transactionId,
-          newMonthlyTotal: data.newMonthlyTotal,
-          availableCredit: data.availableCredit,
-          dueDate: data.dueDate,
-        },
-      });
-    } catch {
-      // Fallback: navigate with mock data if API fails
-      navigate('/checkout/postpaid-processing', {
-        state: {
-          merchantName,
-          txAmount,
-          transactionId: 'TXN-' + Date.now(),
-          newMonthlyTotal: newTotal,
-          availableCredit: status.availableCredit - txAmount,
-          dueDate: status.dueDate,
-        },
-      });
-    }
+        txAmount,
+        transactionId: 'TXN-' + Date.now(),
+        newMonthlyTotal: newTotal,
+        availableCredit: status.availableCredit - txAmount,
+        dueDate: status.dueDate,
+      },
+    });
   };
 
   return (

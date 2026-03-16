@@ -1,45 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const MOCK_DATA = {
-  totalTransactions: 8,
-  totalSpent: 6850,
-  remainingCredit: '43150',
-  thisMonthTotal: '2450',
-  currentMonthAmount: 2450,
+  totalTransactions: 5,
+  totalSpent: 2459,
+  remainingCredit: '47,541',
+  thisMonthTotal: '2,459',
+  currentMonthAmount: 2459,
   transactions: [
-    { id: 1, date: '15 Jan 2026', invoiceNumber: 'INV-001', merchant: 'Office Supplies Ltd', category: 'Office', amount: '850', status: 'Paid' },
-    { id: 2, date: '10 Jan 2026', invoiceNumber: 'INV-002', merchant: 'Cloud Services Inc', category: 'Tech', amount: '1200', status: 'Paid' },
-    { id: 3, date: '05 Jan 2026', invoiceNumber: 'INV-003', merchant: 'Marketing Agency', category: 'Marketing', amount: '400', status: 'Pending' },
+    { id: 1, date: '15 Jan 2026', invoiceNumber: 'INV-001', merchant: 'DEWA', category: 'Electricity', amount: '789', status: 'Paid' },
+    { id: 2, date: '12 Jan 2026', invoiceNumber: 'INV-002', merchant: 'Etisalat', category: 'Telecom', amount: '450', status: 'Paid' },
+    { id: 3, date: '10 Jan 2026', invoiceNumber: 'INV-003', merchant: 'Dubai Police', category: 'Fines', amount: '400', status: 'Paid' },
+    { id: 4, date: '08 Jan 2026', invoiceNumber: 'INV-004', merchant: 'du Telecom', category: 'Telecom', amount: '320', status: 'Paid' },
+    { id: 5, date: '05 Jan 2026', invoiceNumber: 'INV-005', merchant: 'Salik', category: 'Toll', amount: '500', status: 'Paid' },
   ],
   statements: [
-    { id: 1, date: 'Dec 2025', name: 'December 2025 Statement', amount: '4400', status: 'Paid' },
-    { id: 2, date: 'Jan 2026', name: 'January 2026 Statement', amount: '2450', status: 'Pending' },
+    { id: 1, date: 'Jan 2026', name: 'January 2026 Statement', amount: '2,459', status: 'Due' },
+    { id: 2, date: 'Dec 2025', name: 'December 2025 Statement', amount: '1,850', status: 'Paid' },
   ],
 };
 
 export default function PostpaidDashboard() {
   const navigate = useNavigate();
-  const [data, setData] = useState(MOCK_DATA);
+  const [data] = useState(MOCK_DATA);
   const [txSearch, setTxSearch] = useState('');
   const [stSearch, setStSearch] = useState('');
 
-  useEffect(() => {
-    axios.get('/api/postpaid/dashboard').then(r => setData(r.data)).catch(() => {});
-  }, []);
-
   const stats = [
-    { label: 'Total Transactions', value: data?.totalTransactions ?? 0, cls: 'stat-peach' },
-    { label: 'Total Spent', value: `AED ${(data?.totalSpent || 0).toLocaleString()}`, cls: 'stat-blue' },
-    { label: 'Remaining PostPaid Credit', value: `AED ${data?.remainingCredit || 0}`, cls: 'stat-green' },
-    { label: "This Month's Total", value: `AED ${data?.thisMonthTotal || 0}`, cls: 'stat-light' },
+    { label: 'Total Transactions', value: data.totalTransactions, cls: 'stat-peach' },
+    { label: 'Total Spent', value: `AED ${data.totalSpent.toLocaleString()}`, cls: 'stat-blue' },
+    { label: 'Remaining PostPaid Credit', value: `AED ${data.remainingCredit}`, cls: 'stat-green' },
+    { label: "This Month's Total", value: `AED ${data.thisMonthTotal}`, cls: 'stat-light' },
   ];
 
-  const filteredTx = (data?.transactions || []).filter(t =>
+  const filteredTx = data.transactions.filter(t =>
     t.merchant.toLowerCase().includes(txSearch.toLowerCase())
   );
-  const filteredSt = (data?.statements || []).filter(s =>
+  const filteredSt = data.statements.filter(s =>
     s.name.toLowerCase().includes(stSearch.toLowerCase())
   );
 
@@ -64,7 +61,7 @@ export default function PostpaidDashboard() {
         <div style={{ fontSize: 40 }}>📅</div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 12, color: '#6B7280', marginBottom: 4 }}>Current Month Total</div>
-          <div style={{ fontSize: 28, fontWeight: 800, color: '#1A1A1A' }}>AED  {(data?.currentMonthAmount || 0).toLocaleString()}</div>
+          <div style={{ fontSize: 28, fontWeight: 800, color: '#1A1A1A' }}>AED  {data.currentMonthAmount.toLocaleString()}</div>
           <div style={{ fontSize: 13, color: '#9CA3AF', marginTop: 2 }}>January 2026</div>
         </div>
         <button className="btn btn-primary" onClick={() => navigate('/postpaid/bill')}>View Bill</button>

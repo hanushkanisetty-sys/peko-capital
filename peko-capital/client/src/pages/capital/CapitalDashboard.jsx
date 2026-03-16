@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const PIE_COLORS = ['#FF4B4B', '#3B82F6', '#10B981'];
 
 const MOCK_DATA = {
-  totalPayments: 24500,
+  totalPayments: 247500,
   activeProducts: 1,
-  upcomingPayments: 2450,
-  availableCredit: 47550,
+  upcomingPayments: 2459,
+  availableCredit: 47541,
   totalCredit: 50000,
   recentActivity: [
-    { date: '15 Jan 2026', product: 'PostPaid', description: 'Office Supplies Ltd', amount: 850, status: 'Paid' },
-    { date: '10 Jan 2026', product: 'PostPaid', description: 'Cloud Services Inc', amount: 1200, status: 'Paid' },
-    { date: '05 Jan 2026', product: 'PostPaid', description: 'Marketing Agency', amount: 400, status: 'Paid' },
+    { date: '15 Jan 2026', product: 'PostPaid', description: 'DEWA', amount: 789, status: 'Paid' },
+    { date: '12 Jan 2026', product: 'PostPaid', description: 'Etisalat', amount: 450, status: 'Paid' },
+    { date: '10 Jan 2026', product: 'PostPaid', description: 'Dubai Police', amount: 400, status: 'Paid' },
+    { date: '08 Jan 2026', product: 'PostPaid', description: 'du Telecom', amount: 320, status: 'Paid' },
+    { date: '05 Jan 2026', product: 'PostPaid', description: 'Salik', amount: 500, status: 'Paid' },
   ],
   chartData: [
     { month: 'Aug', amount: 3200 },
@@ -22,7 +23,7 @@ const MOCK_DATA = {
     { month: 'Oct', amount: 3800 },
     { month: 'Nov', amount: 5200 },
     { month: 'Dec', amount: 6100 },
-    { month: 'Jan', amount: 2450 },
+    { month: 'Jan', amount: 2459 },
   ],
   productUsage: [
     { name: 'PostPaid', value: 100 },
@@ -33,22 +34,18 @@ const MOCK_DATA = {
 
 export default function CapitalDashboard() {
   const navigate = useNavigate();
-  const [data, setData] = useState(MOCK_DATA);
+  const [data] = useState(MOCK_DATA);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
 
-  useEffect(() => {
-    axios.get('/api/capital/dashboard').then(r => setData(r.data)).catch(() => {});
-  }, []);
-
   const stats = [
-    { label: 'Total Payments', value: `AED ${(data?.totalPayments || 0).toLocaleString()}`, cls: 'stat-peach' },
-    { label: 'Active Products', value: data?.activeProducts ?? 0, cls: 'stat-light' },
-    { label: 'Upcoming Payments', value: `AED ${(data?.upcomingPayments || 0).toLocaleString()}`, cls: 'stat-blue' },
-    { label: 'Available Credit', value: `AED ${(data?.availableCredit || 0).toLocaleString()}`, sub: `of AED ${(data?.totalCredit || 0).toLocaleString()}`, cls: 'stat-green' },
+    { label: 'Total Payments', value: `AED ${data.totalPayments.toLocaleString()}`, cls: 'stat-peach' },
+    { label: 'Active Products', value: data.activeProducts, cls: 'stat-light' },
+    { label: 'Upcoming Payments', value: `AED ${data.upcomingPayments.toLocaleString()}`, cls: 'stat-blue' },
+    { label: 'Available Credit', value: `AED ${data.availableCredit.toLocaleString()}`, sub: `of AED ${data.totalCredit.toLocaleString()}`, cls: 'stat-green' },
   ];
 
-  const filtered = (data?.recentActivity || []).filter(r =>
+  const filtered = data.recentActivity.filter(r =>
     (!category || r.product === category) &&
     (!search || r.description.toLowerCase().includes(search.toLowerCase()))
   );
@@ -109,8 +106,8 @@ export default function CapitalDashboard() {
               <span className="badge badge-green" style={{ fontSize: 10 }}>Active</span>
             </div>
           </div>
-          <div style={{ fontSize: 12, color: '#6B7280' }}>Active plans: <strong>3</strong></div>
-          <div style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>Monthly payment: <strong>AED 2,450</strong></div>
+          <div style={{ fontSize: 12, color: '#6B7280' }}>Active plans: <strong>1</strong></div>
+          <div style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>Monthly payment: <strong>AED 2,459</strong></div>
         </div>
       </div>
 
@@ -152,7 +149,7 @@ export default function CapitalDashboard() {
         <div className="card" style={{ padding: 20 }}>
           <div className="section-title" style={{ marginBottom: 16 }}>Payments Over Time</div>
           <ResponsiveContainer width="100%" height={220}>
-            <LineChart data={data?.chartData || []}>
+            <LineChart data={data.chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" />
               <XAxis dataKey="month" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} />
@@ -165,8 +162,8 @@ export default function CapitalDashboard() {
           <div className="section-title" style={{ marginBottom: 16 }}>Product Usage</div>
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
-              <Pie data={data?.productUsage || []} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
-                {(data?.productUsage || []).map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+              <Pie data={data.productUsage} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
+                {data.productUsage.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
               </Pie>
               <Legend />
               <Tooltip />

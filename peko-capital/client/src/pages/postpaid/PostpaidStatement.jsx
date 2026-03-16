@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
 
 const MOCK_DATA = {
   period: 'January 2026',
@@ -17,28 +16,26 @@ const MOCK_DATA = {
   },
   accountSummary: {
     openingBalance: 0,
-    amountPaid: 4400,
-    closingBalance: 2450,
+    amountPaid: 1850,
+    closingBalance: 2459,
   },
   transactions: [
-    { date: '15 Jan 2026', billType: 'Vendor Payment', merchant: 'Office Supplies Ltd', amount: 850 },
-    { date: '10 Jan 2026', billType: 'SaaS Subscription', merchant: 'Cloud Services Inc', amount: 1200 },
-    { date: '05 Jan 2026', billType: 'Marketing', merchant: 'Marketing Agency', amount: 400 },
+    { date: '15 Jan 2026', billType: 'Electricity', merchant: 'DEWA', amount: 789 },
+    { date: '12 Jan 2026', billType: 'Telecom', merchant: 'Etisalat', amount: 450 },
+    { date: '10 Jan 2026', billType: 'Fines', merchant: 'Dubai Police', amount: 400 },
+    { date: '08 Jan 2026', billType: 'Telecom', merchant: 'du Telecom', amount: 320 },
+    { date: '05 Jan 2026', billType: 'Toll', merchant: 'Salik', amount: 500 },
   ],
-  subtotal: 2450,
+  subtotal: 2459,
   serviceFee: 0,
-  totalDue: 2450,
+  totalDue: 2459,
 };
 
 export default function PostpaidStatement() {
   const navigate = useNavigate();
   const location = useLocation();
   const isDownload = new URLSearchParams(location.search).get('view') === 'download';
-  const [data, setData] = useState(MOCK_DATA);
-
-  useEffect(() => {
-    axios.get('/api/postpaid/statement').then(r => setData(r.data)).catch(() => {});
-  }, []);
+  const [data] = useState(MOCK_DATA);
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>
