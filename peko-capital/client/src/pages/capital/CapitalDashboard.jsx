@@ -27,8 +27,6 @@ const MOCK_DATA = {
   ],
   productUsage: [
     { name: 'PostPaid', value: 100 },
-    { name: 'Peko Flex', value: 0 },
-    { name: 'Peko Fast', value: 0 },
   ],
 };
 

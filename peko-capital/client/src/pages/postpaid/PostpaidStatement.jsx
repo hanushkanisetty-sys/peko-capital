@@ -15,7 +15,7 @@ const MOCK_DATA = {
     trn: '100234567800003',
   },
   accountSummary: {
-    openingBalance: 0,
+    openingBalance: 1850,
     amountPaid: 1850,
     closingBalance: 2459,
   },
@@ -27,8 +27,8 @@ const MOCK_DATA = {
     { date: '05 Jan 2026', billType: 'Toll', merchant: 'Salik', amount: 500 },
   ],
   subtotal: 2459,
-  serviceFee: 0,
-  totalDue: 2459,
+  serviceFee: 25,
+  totalDue: 2484,
 };
 
 export default function PostpaidStatement() {

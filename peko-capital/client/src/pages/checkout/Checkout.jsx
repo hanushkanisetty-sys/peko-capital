@@ -121,7 +121,6 @@ export default function Checkout() {
             <div className="section-title" style={{ marginBottom: 16 }}>Total Amount</div>
             {[
               ['Current Plan Balance', `AED ${subtotal}`],
-              ['Adjusted Price', 'AED 0'],
               ['VAT 5%', `AED ${vat}`],
             ].map(([l, v]) => (
               <div key={l} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
