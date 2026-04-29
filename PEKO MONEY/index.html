@@ -1364,27 +1364,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
           <div class="fg fg-2">
             <div class="f-group">
               <label class="f-label">No. of employees <span class="f-req">*</span></label>
-              <select class="f-select" id="sh-corp-employees">
-                <option value="">Select range</option>
-                <option value="1-10">1 – 10</option>
-                <option value="11-50">11 – 50</option>
-                <option value="51-100">51 – 100</option>
-                <option value="101-250">101 – 250</option>
-                <option value="251-500">251 – 500</option>
-                <option value="500+">500+</option>
-              </select>
+              <input class="f-input" type="number" id="sh-corp-employees" min="0" placeholder="e.g. 120">
             </div>
             <div class="f-group">
               <label class="f-label">Annual turnover (AED) <span class="f-req">*</span></label>
-              <select class="f-select" id="sh-corp-turnover">
-                <option value="">Select range</option>
-                <option value="<500K">Less than AED 500,000</option>
-                <option value="500K-1M">AED 500,000 – 1,000,000</option>
-                <option value="1M-5M">AED 1,000,000 – 5,000,000</option>
-                <option value="5M-10M">AED 5,000,000 – 10,000,000</option>
-                <option value="10M-50M">AED 10,000,000 – 50,000,000</option>
-                <option value=">50M">More than AED 50,000,000</option>
-              </select>
+              <input class="f-input" type="number" id="sh-corp-turnover" min="0" placeholder="e.g. 5000000">
             </div>
           </div>
 
@@ -1454,7 +1438,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
             </div>
           </div>
 
-          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-corp','st-sh-corp')">Done ✓</button></div>
+          <div class="done-btn"><button class="btn-done-section" onclick="saveShareholder()">Save Shareholder ✓</button></div>
         </div>
       </div>
 
@@ -2042,7 +2026,7 @@ let SH_LIST=[];
 let SH_EDITING=-1;
 function openAddShareholder(){SH_EDITING=-1;clearSHPanel();document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='none';document.getElementById('sh-panel').style.display='block';document.getElementById('sh-panel-title').textContent='Person '+(SH_LIST.length+1)+': Enter details';window.scrollTo(0,0);}
 function closeSHPanel(){document.getElementById('sh-panel').style.display='none';if(SH_LIST.length>0){document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='block';}else{document.getElementById('sh-landing').style.display='block';}}
-function clearSHPanel(){const typeSelect=document.getElementById('sh-type-select');if(typeSelect)typeSelect.value='individual';document.getElementById('cs-sh-identity').style.display='';document.getElementById('cs-sh-corp').style.display='none';document.getElementById('cs-sh-resaddr-p').style.display='';document.getElementById('cs-sh-tax-p').style.display='';document.getElementById('sh-res-r').classList.add('sel');document.getElementById('sh-res-nr').classList.remove('sel');document.getElementById('sh-eid-block').style.display='';document.getElementById('sh-ppt-block').style.display='none';document.getElementById('sh-eid-num-row').style.display='';document.getElementById('sh-ppt-num-row').style.display='none';document.getElementById('sh-sig-yes').classList.remove('sel');document.getElementById('sh-sig-no').classList.remove('sel');['sh-p-first','sh-p-last','sh-p-eid','sh-p-ppt','sh-p-email','sh-p-mobile','sh-p-dob','sh-p-issue','sh-p-expiry','sh-ownership'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('sh-designation').value='';['sh-corp-name','sh-corp-tl-no','sh-corp-addr1','sh-corp-addr2','sh-corp-city','sh-corp-pobox','sh-corp-landmark','sh-corp-mobile','sh-corp-email','sh-corp-tin'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-type','sh-corp-country','sh-corp-employees','sh-corp-turnover','sh-corp-emirates'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-startdate','sh-corp-tl-issue','sh-corp-tl-expiry'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const tinTgl=document.getElementById('sh-corp-has-tin');if(tinTgl)tinTgl.checked=false;const tinCond=document.getElementById('sh-corp-tin-cond');if(tinCond)tinCond.classList.remove('show');['st-sh-type','st-sh-identity','st-sh-corp','st-sh-resaddr-p','st-sh-tax-p'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='st-dot st-empty';el.textContent='○';}});}
+function clearSHPanel(){const typeSelect=document.getElementById('sh-type-select');if(typeSelect)typeSelect.value='individual';document.getElementById('cs-sh-identity').style.display='';document.getElementById('cs-sh-corp').style.display='none';document.getElementById('cs-sh-resaddr-p').style.display='';document.getElementById('cs-sh-tax-p').style.display='';document.getElementById('sh-res-r').classList.add('sel');document.getElementById('sh-res-nr').classList.remove('sel');document.getElementById('sh-eid-block').style.display='';document.getElementById('sh-ppt-block').style.display='none';document.getElementById('sh-eid-num-row').style.display='';document.getElementById('sh-ppt-num-row').style.display='none';document.getElementById('sh-sig-yes').classList.remove('sel');document.getElementById('sh-sig-no').classList.remove('sel');['sh-p-first','sh-p-last','sh-p-eid','sh-p-ppt','sh-p-email','sh-p-mobile','sh-p-dob','sh-p-issue','sh-p-expiry','sh-ownership'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('sh-designation').value='';['sh-corp-name','sh-corp-tl-no','sh-corp-addr1','sh-corp-addr2','sh-corp-city','sh-corp-pobox','sh-corp-landmark','sh-corp-mobile','sh-corp-email','sh-corp-tin','sh-corp-employees','sh-corp-turnover'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-type','sh-corp-country','sh-corp-emirates'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-startdate','sh-corp-tl-issue','sh-corp-tl-expiry'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const tinTgl=document.getElementById('sh-corp-has-tin');if(tinTgl)tinTgl.checked=false;const tinCond=document.getElementById('sh-corp-tin-cond');if(tinCond)tinCond.classList.remove('show');['st-sh-type','st-sh-identity','st-sh-corp','st-sh-resaddr-p','st-sh-tax-p'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='st-dot st-empty';el.textContent='○';}});}
 function setSHType(type){const isInd=type==='individual';const isCorp=type==='corporate';document.getElementById('cs-sh-identity').style.display=isInd?'':'none';document.getElementById('cs-sh-corp').style.display=isCorp?'':'none';document.getElementById('cs-sh-resaddr-p').style.display=isInd?'':'none';document.getElementById('cs-sh-tax-p').style.display=isInd?'':'none';document.getElementById('sh-signatory-row').style.display=type?'':'none';}
 function setPanelRes(type){document.getElementById('sh-res-r').classList.toggle('sel',type==='resident');document.getElementById('sh-res-nr').classList.toggle('sel',type==='nonresident');document.getElementById('sh-eid-block').style.display=type==='resident'?'':'none';document.getElementById('sh-ppt-block').style.display=type==='nonresident'?'':'none';document.getElementById('sh-eid-num-row').style.display=type==='resident'?'':'none';document.getElementById('sh-ppt-num-row').style.display=type==='nonresident'?'':'none';var aR=document.getElementById('sh-addr-resident');var aNR=document.getElementById('sh-addr-nonresident');if(aR)aR.style.display=type==='resident'?'':'none';if(aNR)aNR.style.display=type==='nonresident'?'':'none';}
 function setSHSignatory(val){ /* native radio handles state */ }
