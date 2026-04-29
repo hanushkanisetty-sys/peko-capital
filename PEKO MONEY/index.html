@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peko Money — Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#E8341A;--red-h:#cc2c14;--red-bg:#fff5f3;
+  --dark:#111;--g7:#3d3d3d;--g5:#6b6b6b;--g4:#8c8c8c;--g3:#b8b8b8;
+  --g2:#e5e5e5;--g1:#f5f5f5;--g0:#fafafa;--white:#fff;
+  --green:#15803d;--green-bg:#f0fdf4;--green-b:#86efac;
+  --amber:#92400e;--amber-bg:#fffbeb;--amber-b:#fcd34d;
+  --blue:#1e40af;--blue-bg:#eff6ff;--blue-b:#bfdbfe;
+  --orange:#c2410c;--orange-bg:#fff7ed;--orange-b:#fed7aa;
+  --radius:8px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dark);font-size:13px;line-height:1.5;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:192px;background:var(--white);border-right:1px solid var(--g2);display:flex;flex-direction:column;z-index:200}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid var(--g2)}
+.sb-nav{flex:1;padding:6px 0;overflow-y:auto}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;color:var(--g5);cursor:pointer;transition:.15s}
+.sb-item:hover{background:var(--g1);color:var(--dark)}
+.sb-item.active{color:var(--red);background:#fff5f3;font-weight:500}
+.sb-item svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8}
+.sb-user{padding:14px 16px;border-top:1px solid var(--g2);display:flex;align-items:center;gap:9px}
+.sb-av{width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.sb-un{font-size:12px;font-weight:500}.sb-ur{font-size:11px;color:var(--g3)}
+
+/* MAIN */
+.main{margin-left:192px;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--white);border-bottom:1px solid var(--g2);height:52px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.bc{display:flex;align-items:center;gap:6px;font-size:13px}
+.bc a{color:var(--red);font-weight:500;text-decoration:none}
+.bc-sep{color:var(--g3);font-size:11px}
+.bc-cur{color:var(--dark);font-weight:500}
+.tb-r{display:flex;align-items:center;gap:10px}
+.tb-chip{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;background:var(--g1);color:var(--g5);display:none}
+.btn-sl-top{font-size:12.5px;color:var(--g5);background:none;border:1px solid var(--g2);padding:5px 13px;border-radius:6px;cursor:pointer}
+
+/* STEPPER */
+.stepper-bar{background:var(--white);border-bottom:1px solid var(--g2);padding:0 32px}
+.stepper{display:flex;align-items:center;padding:14px 0;gap:0;overflow-x:auto;scrollbar-width:none}
+.stepper::-webkit-scrollbar{display:none}
+.step{display:flex;align-items:center;gap:7px;cursor:pointer;flex-shrink:0}
+.sn{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;background:var(--g2);color:var(--g3);transition:.15s;flex-shrink:0}
+.step.active .sn{background:var(--red);color:#fff}
+.step.done .sn{background:var(--green);color:#fff}
+.sl{font-size:12px;color:var(--g3);white-space:nowrap}
+.step.active .sl{color:var(--red);font-weight:500}
+.step.done .sl{color:var(--green)}
+.step-line{flex:1;height:1px;background:var(--g2);margin:0 12px;min-width:16px}
+.step-line.done{background:var(--green)}
+
+/* PAGE */
+.page-wrap{flex:1;padding:28px 32px 100px;display:flex;justify-content:center}
+.page-inner{width:100%;max-width:720px}
+.screen{display:none}.screen.active{display:block}
+.pg-head{margin-bottom:20px}
+.pg-head h1{font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:4px}
+.pg-head p{font-size:13px;color:var(--g5)}
+.notice{display:flex;gap:10px;padding:11px 14px;border-radius:var(--radius);margin-bottom:16px;font-size:12.5px;align-items:flex-start}
+.notice.amber{background:var(--amber-bg);border:1px solid var(--amber-b);color:var(--amber)}
+.notice.blue{background:var(--blue-bg);border:1px solid var(--blue-b);color:var(--blue)}
+.notice.green{background:var(--green-bg);border:1px solid var(--green-b);color:var(--green)}
+.n-ico{font-size:14px;flex-shrink:0;margin-top:1px}
+
+/* ═══ COLLAPSIBLE SECTION ═══ */
+.col-section{background:var(--white);border:1px solid var(--g2);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+.col-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s}
+.col-header:hover{background:var(--g0)}
+.col-left{display:flex;align-items:center;gap:10px}
+.col-title{font-size:13.5px;font-weight:600}
+.col-status{display:flex;align-items:center;gap:6px;font-size:12px}
+/* Status icons */
+.st-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.st-done{background:var(--green);color:#fff}
+.st-partial{background:#f97316;color:#fff}
+.st-empty{background:var(--g2);color:var(--g4)}
+.st-lbl-done{color:var(--green);font-weight:500}
+.st-lbl-partial{color:#c2410c;font-weight:500}
+.st-lbl-empty{color:var(--g4)}
+.col-chevron{color:var(--g4);transition:transform .2s;font-size:13px}
+.col-section.open .col-chevron{transform:rotate(180deg)}
+.col-body{display:none;padding:0 18px 20px;border-top:1px solid var(--g2)}
+.col-section.open .col-body{display:block}
+
+/* Done button at bottom of section */
+.done-btn{display:flex;align-items:center;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--g1);margin-top:16px}
+.btn-done-section{font-size:12.5px;font-weight:500;padding:7px 18px;border-radius:6px;background:var(--green);color:#fff;border:none;cursor:pointer;transition:.15s}
+.btn-done-section:hover{background:#166534}
+
+/* FORMS */
+.fg{display:grid;gap:14px}
+.fg-2{grid-template-columns:1fr 1fr}
+.fg-3{grid-template-columns:1fr 1fr 1fr}
+.fg-1{grid-template-columns:1fr}
+.f-group{display:flex;flex-direction:column;gap:5px}
+.f-group.span2{grid-column:span 2}
+.f-group.span3{grid-column:span 3}
+.f-label{font-size:12.5px;font-weight:500;color:var(--g7);display:flex;align-items:center;gap:5px}
+.f-req{color:var(--red)}
+.f-input,.f-select,.f-textarea{width:100%;padding:9px 12px;border:1px solid var(--g2);border-radius:6px;font-size:13px;font-family:inherit;color:var(--dark);background:var(--white);outline:none;transition:.15s;appearance:none}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(232,52,26,.08)}
+.f-input::placeholder,.f-textarea::placeholder{color:var(--g3)}
+.f-input.filled,.f-select.filled{background:var(--green-bg);border-color:var(--green-b);color:var(--green)}
+.f-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%238c8c8c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;cursor:pointer}
+.f-textarea{resize:vertical;min-height:84px;line-height:1.55}
+.f-hint{font-size:11.5px;color:var(--g3);margin-top:2px}
+.phone-wrap{display:flex}
+.phone-flag{display:flex;align-items:center;gap:5px;padding:9px 11px;border:1px solid var(--g2);border-right:none;border-radius:6px 0 0 6px;background:var(--g1);font-size:13px;font-weight:500;flex-shrink:0}
+.phone-wrap .f-input{border-radius:0 6px 6px 0}
+.sec-lbl{font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--g4);margin:18px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--g2)}
+
+/* INFO */
+.info-wrap{position:relative;display:inline-flex}
+.info-btn{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--g3);background:none;font-size:8px;font-weight:700;color:var(--g3);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0}
+.info-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
+.tooltip{display:none;position:absolute;left:20px;top:-4px;z-index:600;background:#1a1a1a;color:#fff;font-size:11.5px;line-height:1.55;padding:10px 13px;border-radius:6px;width:250px;box-shadow:0 4px 20px rgba(0,0,0,.2);pointer-events:none}
+.tooltip::before{content:'';position:absolute;left:-5px;top:9px;border:5px solid transparent;border-right-color:#1a1a1a;border-left:0}
+.tooltip.left{left:auto;right:20px}
+.tooltip.left::before{left:auto;right:-5px;border-right-color:transparent;border-left:5px solid #1a1a1a}
+.info-wrap:hover .tooltip{display:block}
+.tooltip strong{font-weight:600;display:block;margin-bottom:3px}
+.tooltip ul{padding-left:13px;margin-top:3px}.tooltip li{margin-bottom:2px}
+
+/* RADIO */
+.radio-row{display:flex;gap:8px;flex-wrap:wrap}
+.radio-opt{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border:1.5px solid var(--g2);border-radius:6px;cursor:pointer;transition:.15s;flex:1;min-width:130px}
+.radio-opt:hover{border-color:var(--g3);background:var(--g1)}
+.radio-opt.sel{border-color:var(--red);background:var(--red-bg)}
+.r-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--g3);display:flex;align-items:center;justify-content:center;transition:.15s;flex-shrink:0;margin-top:1px}
+.radio-opt.sel .r-dot{border-color:var(--red)}
+.r-dot::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--red);display:none}
+.radio-opt.sel .r-dot::after{display:block}
+.r-lbl{font-size:13px;font-weight:500}
+.r-sub{font-size:11px;color:var(--g5);margin-top:1px}
+
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--g1)}
+.toggle-row:last-child{border-bottom:none}
+.tgl-lbl{font-size:13px;font-weight:500}
+.tgl-hint{font-size:11.5px;color:var(--g5);margin-top:2px}
+.toggle{position:relative;width:38px;height:20px;flex-shrink:0;cursor:pointer}
+.toggle input{opacity:0;position:absolute;width:0;height:0}
+.tgl-track{position:absolute;inset:0;border-radius:20px;background:var(--g2);transition:.2s}
+.toggle input:checked~.tgl-track{background:var(--red)}
+.tgl-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.toggle input:checked~.tgl-thumb{left:20px}
+.cond{display:none;margin-top:10px}.cond.show{display:block}
+
+/* DOC UPLOAD */
+.doc-block{background:var(--g0);border:1.5px dashed var(--g2);border-radius:var(--radius);padding:14px 16px;margin-bottom:16px}
+.doc-block.uploaded{background:var(--green-bg);border-color:var(--green-b);border-style:solid}
+.doc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.doc-left{display:flex;align-items:flex-start;gap:11px;flex:1}
+.doc-ico{width:36px;height:36px;border-radius:6px;background:var(--white);border:1px solid var(--g2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.doc-block.uploaded .doc-ico{background:var(--green-bg);border-color:var(--green-b)}
+.doc-info{flex:1}
+.doc-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px}
+.doc-desc{font-size:12px;color:var(--g5);line-height:1.4}
+.doc-block.uploaded .doc-desc{color:var(--green)}
+.doc-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;text-transform:uppercase}
+.doc-badge.req{background:#fee2e2;color:#b91c1c}
+.doc-badge.opt{background:var(--g1);color:var(--g5)}
+.doc-badge.done{background:var(--green-bg);color:var(--green)}
+.doc-fills{margin-top:10px;padding-top:10px;border-top:1px solid var(--g2);display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+.doc-block.uploaded .doc-fills{border-color:var(--green-b)}
+.doc-fills-lbl{font-size:11px;color:var(--g4);font-weight:500;margin-right:2px}
+.doc-chip{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--white);border:1px solid var(--g2);color:var(--g7)}
+.doc-block.uploaded .doc-chip{border-color:var(--green-b);color:var(--green)}
+.btn-up{font-size:12px;font-weight:500;padding:7px 15px;border-radius:6px;border:1.5px solid var(--g2);background:var(--white);cursor:pointer;transition:.15s;white-space:nowrap;flex-shrink:0}
+.btn-up:hover{background:var(--g1);border-color:var(--g3)}
+.btn-up.primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn-up.primary:hover{background:var(--red-h)}
+.btn-up.done{background:var(--green-bg);border-color:var(--green-b);color:var(--green)}
+
+/* SHAREHOLDER */
+.sh-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sh-tabs{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+.sh-tab{padding:7px 16px;border:1.5px solid var(--g2);border-radius:20px;font-size:12.5px;font-weight:500;color:var(--g5);cursor:pointer;transition:.15s;white-space:nowrap}
+.sh-tab:hover{border-color:var(--g3);color:var(--dark)}
+.sh-tab.active{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.btn-add-sh{font-size:12.5px;font-weight:500;padding:7px 16px;border-radius:6px;border:1.5px solid var(--red);background:var(--white);color:var(--red);cursor:pointer;transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:5px}
+.btn-add-sh:hover{background:var(--red-bg)}
+
+/* FOOTER */
+.footer{position:fixed;bottom:0;left:192px;right:0;background:var(--white);border-top:1px solid var(--g2);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+
+.footer-l{display:flex;gap:8px;align-items:center}
+.btn-back{font-size:13px;font-weight:500;padding:10px 20px;border:1.5px solid #d1d5db;border-radius:50px;background:#fff;cursor:pointer;color:#111;transition:.15s;display:inline-flex;align-items:center;gap:6px;letter-spacing:-.1px}
+.btn-back:hover{border-color:#9ca3af;background:#f9fafb}
+.btn-back:disabled{opacity:.35;cursor:default;pointer-events:none}
+.btn-sl{font-size:13px;font-weight:500;padding:10px 20px;border:1.5px solid #d1d5db;border-radius:50px;background:#fff;cursor:pointer;color:#6b7280;transition:.15s;letter-spacing:-.1px}
+.btn-sl:hover{border-color:#9ca3af;background:#f9fafb}
+.btn-next{font-size:13px;font-weight:600;padding:10px 26px;border:none;border-radius:50px;background:var(--red);color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s;letter-spacing:-.1px}
+.btn-next:hover{background:var(--red-h)}
+.btn-next svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5}
+.btn-submit{font-size:13px;font-weight:600;padding:10px 26px;border:none;border-radius:50px;background:var(--red);color:#fff;cursor:pointer;transition:.15s;letter-spacing:-.1px}
+.btn-submit:hover{background:var(--red-h)}
+.privacy{font-size:11.5px;color:var(--g3);margin-top:16px;text-align:center}.screen .privacy{display:none}.screen.active .privacy{display:block}
+.privacy a{color:var(--red);text-decoration:none}
+
+/* REVIEW DOCS */
+.rv-sec{margin-bottom:20px}
+.rv-title{font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--g3);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.rv-edit{font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;font-weight:500;text-transform:none;letter-spacing:0}
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--g2);border-radius:var(--radius);overflow:hidden}
+.rv-item{background:var(--white);padding:11px 16px}
+.rv-key{font-size:11px;color:var(--g3);margin-bottom:3px}
+.rv-val{font-size:13px;font-weight:500}
+.rv-doc{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:6px;border:1px solid var(--g2);margin-bottom:8px;font-size:12.5px;cursor:pointer;transition:.15s}
+.rv-doc:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.rv-doc.ok{background:var(--green-bg);border-color:var(--green-b);color:var(--green);cursor:default}
+.rv-doc.ok:hover{box-shadow:none}
+.rv-doc.miss{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+.rv-doc.incomplete{background:var(--orange-bg);border-color:var(--orange-b);color:var(--orange)}
+.rv-doc-name{flex:1;font-weight:500}
+.rv-doc-action{font-size:11px;font-weight:500;opacity:.8}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;display:none}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:12px;width:100%;max-width:660px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-head{padding:18px 22px;border-bottom:1px solid var(--g2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:15px;font-weight:600;letter-spacing:-.2px}
+.modal-close{width:28px;height:28px;border-radius:6px;border:1px solid var(--g2);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--g5);transition:.15s}
+.modal-close:hover{background:var(--g1)}
+.modal-body{padding:20px 22px;overflow-y:auto;flex:1}
+.modal-footer{padding:14px 22px;border-top:1px solid var(--g2);display:flex;justify-content:flex-end;gap:9px;flex-shrink:0}
+.btn-modal-cancel{font-size:13px;font-weight:500;padding:8px 18px;border:1.5px solid var(--g2);border-radius:6px;background:var(--white);cursor:pointer;color:var(--g5)}
+.btn-modal-save{font-size:13px;font-weight:600;padding:8px 18px;border:none;border-radius:6px;background:var(--red);color:#fff;cursor:pointer}
+
+/* Modal form elements */
+.modal-section{margin-bottom:20px}
+.modal-section-title{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--g4);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--g2)}
+.checkbox-row{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--g1)}
+.checkbox-row:last-child{border-bottom:none}
+.checkbox-row input[type=checkbox]{width:14px;height:14px;accent-color:var(--red);flex-shrink:0;margin-top:2px;cursor:pointer}
+.checkbox-lbl{font-size:12.5px;line-height:1.5;cursor:pointer}
+.signatory-table{width:100%;border-collapse:collapse;margin-top:8px}
+.signatory-table th{font-size:11px;font-weight:600;color:var(--g4);text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;text-align:left;border-bottom:2px solid var(--g2)}
+.signatory-table td{padding:8px 10px;border-bottom:1px solid var(--g1);vertical-align:middle}
+.signatory-table td input[type=text]{width:100%;padding:6px 9px;border:1px solid var(--g2);border-radius:5px;font-size:12.5px;font-family:inherit;outline:none}
+.signatory-table td input[type=text]:focus{border-color:var(--red)}
+.signatory-table td input[type=checkbox]{width:14px;height:14px;accent-color:var(--red);cursor:pointer}
+
+/* SPIN */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+@keyframes fillPop{0%{background:#fff}50%{background:#dcfce7}100%{background:#f0fdf4}}
+.f-input.pop,.f-select.pop{animation:fillPop .45s ease forwards}
+@keyframes slideDown{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sh-pane{animation:slideDown .2s ease}
+
+/* ── SHAREHOLDER NEW DESIGN ── */
+.sh-empty-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:2px dashed var(--g2);border-radius:12px;padding:48px 20px;cursor:pointer;background:var(--white);transition:.15s;margin-bottom:16px}
+.sh-empty-card:hover{border-color:var(--red);background:var(--red-bg)}
+.sh-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:0 2px}
+.sh-cancel{font-size:12.5px;color:var(--g5);background:none;border:1px solid var(--g2);border-radius:6px;padding:5px 12px;cursor:pointer;transition:.15s}
+.sh-cancel:hover{border-color:var(--g3);background:var(--g1)}
+.sh-card{background:var(--white);border:1px solid var(--g2);border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.sh-card-left{display:flex;align-items:center;gap:12px}
+.sh-card-av{width:36px;height:36px;border-radius:50%;background:var(--red-bg);color:var(--red);font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sh-card-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.sh-card-meta{font-size:11.5px;color:var(--g4)}
+.sh-card-actions{display:flex;gap:8px}
+.sh-card-edit{font-size:12px;color:var(--red);background:none;border:1px solid var(--red-bg);border-radius:6px;padding:5px 12px;cursor:pointer}
+.sh-card-del{font-size:12px;color:var(--g4);background:none;border:1px solid var(--g2);border-radius:6px;padding:5px 10px;cursor:pointer}
+.sh-add-more{width:100%;padding:12px;border:1.5px dashed var(--g2);border-radius:8px;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--red);transition:.15s}
+.sh-add-more:hover{border-color:var(--red);background:var(--red-bg)}
+
+.source-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.source-tag{font-size:12.5px;padding:6px 14px;border-radius:20px;border:1.5px solid var(--g2);background:var(--white);cursor:pointer;color:var(--g5);transition:.15s;font-weight:500}
+.source-tag:hover{border-color:var(--red);color:var(--red)}
+.source-tag.active{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:600}
+.btn-add-entry{font-size:12.5px;font-weight:500;color:var(--red);background:none;border:1.5px dashed var(--red-bg);border-radius:6px;padding:7px 14px;cursor:pointer;margin-top:6px;transition:.15s;width:100%}
+.btn-add-entry:hover{background:var(--red-bg);border-color:var(--red)}
+
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sb-logo"><svg width="68" height="22" viewBox="0 0 68 22" fill="none"><text x="0" y="17" font-family="Inter,sans-serif" font-weight="700" font-size="18" fill="#111">Peko</text><circle cx="62" cy="5" r="4" fill="#E8341A"/></svg></div>
+  <nav class="sb-nav">
+    <div class="sb-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+    <div class="sb-item active"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Peko Money</div>
+    <div class="sb-item"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Bill Payments</div>
+    <div class="sb-item"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Corporate Travel</div>
+    <div class="sb-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Payroll</div>
+    <div class="sb-item"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>Softwares</div>
+    <div class="sb-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>More Services</div>
+  </nav>
+  <div class="sb-user">
+    <div class="sb-av">S</div>
+    <div><div class="sb-un">SAVOLL LLC</div><div class="sb-ur">Corporate</div></div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="bc"><a href="#">Peko Money</a><span class="bc-sep">›</span><span class="bc-cur">Register</span></div>
+    <div class="tb-r"><span class="tb-chip" id="biz-chip"></span><button class="btn-sl-top">Save & continue later</button></div>
+  </div>
+  <div class="stepper-bar">
+    <div class="stepper">
+      <div class="step active" id="stp0"><div class="sn"><span>1</span></div><div class="sl">Initiator details</div></div>
+      <div class="step-line" id="ln0"></div>
+      <div class="step" id="stp1"><div class="sn"><span>2</span></div><div class="sl">Company details</div></div>
+      <div class="step-line" id="ln1"></div>
+      <div class="step" id="stp2"><div class="sn"><span>3</span></div><div class="sl">Financial details</div></div>
+      <div class="step-line" id="ln2"></div>
+      <div class="step" id="stp3"><div class="sn"><span>4</span></div><div class="sl">Shareholders</div></div>
+      <div class="step-line" id="ln3"></div>
+      <div class="step" id="stp4"><div class="sn"><span>5</span></div><div class="sl">Review</div></div>
+    </div>
+  </div>
+
+  <div class="page-wrap"><div class="page-inner">
+
+  <div class="screen active" id="sc0">
+    <div class="col-section open" id="cs-init">
+      <div class="col-header" onclick="toggleSection('cs-init')">
+        <div class="col-left">
+          <div class="st-dot st-empty" id="st-init">○</div>
+          <div class="col-title">Initiator details</div>
+        </div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <div style="margin-bottom:16px;margin-top:14px">
+          <div class="f-label" style="margin-bottom:8px">Who is completing this application? <span class="f-req">*</span></div>
+          <div class="radio-row">
+            <div class="radio-opt sel" onclick="selRole(this,'449930000')"><div class="r-dot"></div><div><div class="r-lbl">Shareholder</div></div></div>
+            <div class="radio-opt" onclick="selRole(this,'449930001')"><div class="r-dot"></div><div><div class="r-lbl">Authorised Person</div></div></div>
+        
+          </div>
+          <!-- Authorised signatory — small inline radio style -->
+          <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <span style="font-size:13px;color:var(--dark)">Are you an authorised signatory?</span>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px;white-space:nowrap">
+              <input type="radio" name="init-sig" id="init-sig-yes" value="yes" style="accent-color:var(--red);width:14px;height:14px" onchange="setInitSignatory(true)"> Yes
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px;white-space:nowrap">
+              <input type="radio" name="init-sig" id="init-sig-no" value="no" style="accent-color:var(--red);width:14px;height:14px" onchange="setInitSignatory(false)"> No
+            </label>
+          </div>
+        </div>
+        <div class="fg fg-2" style="margin-bottom:16px">
+          <div class="f-group"><label class="f-label">First name <span class="f-req">*</span></label><input class="f-input" id="i-first" placeholder="John" oninput="updInitStatus()"></div>
+          <div class="f-group"><label class="f-label">Last name <span class="f-req">*</span></label><input class="f-input" id="i-last" placeholder="Doe" oninput="updInitStatus()"></div>
+          <div class="f-group"><label class="f-label">Email <span class="f-req">*</span></label><input class="f-input" id="i-email" type="email" placeholder="john@company.com" oninput="updInitStatus()"></div>
+          <div class="f-group"><label class="f-label">Mobile number <span class="f-req">*</span></label><div class="phone-wrap"><div class="phone-flag"><span>🇦🇪</span> +971</div><input class="f-input" id="i-mobile" placeholder="50 XXX XXXX" oninput="updInitStatus()"></div></div>
+        </div>
+        <div class="f-group">
+          <label class="f-label">Business type <span class="f-req">*</span><div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>Business Type</strong>Determines which documents are required. Select the legal structure matching your company's registration.</div></div></label>
+          <select class="f-select" id="biz-select" onchange="selBiz(this)" style="max-width:420px">
+            <option value="">Select business type</option>
+            <option value="SP|Sole Proprietorship|53">Sole Proprietorship</option>
+            <option value="SPC|Simple Partnership|50">Simple Partnership</option>
+            <option value="GP|General Partnership|58">General Partnership</option>
+            <option value="LLP|Limited Liability Partnership|64">Limited Liability Partnership</option>
+            <option value="LLC|LLC — Mainland|47">Limited Liability Company (LLC) — Mainland</option>
+            <option value="LLCFZ|LLC — Free Zone|59">Limited Liability Company (LLC) — Free Zone</option>
+            <option value="FZE|Free Zone Establishment (FZE)|44">Free Zone Establishment (FZE)</option>
+            <option value="FZCO|Free Zone Company (FZCO)|59">Free Zone Company (FZCO)</option>
+            <option value="FFZE|Financial Free Zone FZE|70">Financial Free Zone Establishment (FZE)</option>
+            <option value="FFZCO|Financial Free Zone FZCO|71">Financial Free Zone Company (FZCO)</option>
+            <option value="PJS|Private Joint Stock (Unlisted)|51">Private Joint Stock Company (Unlisted)</option>
+            <option value="PJSC|Public Joint Stock (PJSC)|52">Public Joint Stock Company (PJSC)</option>
+            <option value="FI|Financial Institution|65">Financial Institution</option>
+            <option value="NBFI|Non-Bank Financial Institution|66">Non-Bank Financial Institution</option>
+            <option value="BUC|Branch of UAE Company|55">Branch of UAE Company</option>
+            <option value="BFC|Branch of Foreign Company|40">Branch of Foreign Company</option>
+            <option value="NPO|NPO / Charity / Religious Org|41">NPO / Charity / Religious Org</option>
+            <option value="NPOF|NPO / Federation / Foundation / Club|72">NPO / Federation / Foundation / Club</option>
+            <option value="SPV|Special Purpose Vehicle (SPV)|54">Special Purpose Vehicle (SPV)</option>
+            <option value="TFO|Trust / Family Office|62">Trust / Family Office</option>
+            <option value="JV|Joint Venture|61">Joint Venture</option>
+            <option value="GOV|Government Entity|46">Government / Emirates Ministry</option>
+            <option value="FGOV|Federal Government|45">Federal Government / Ministry</option>
+            <option value="EMB|Embassy / Consulate / Diplomatic Mission|56">Embassy / Consulate / Diplomatic Mission</option>
+            <option value="UFC|Under Formation Company|57">Under Formation Company</option>
+          </select>
+          <div class="f-hint">This determines which documents are required in the following steps.<br><br>Note: certain entity types (Financial Institutions, Regulated Exchange Houses) are subject to enhanced due diligence requirements.</div>
+        </div>
+        <!-- POA — only shown when Authorised Person is selected -->
+        <div id="init-poa-block" style="display:none;margin-top:16px;background:var(--g0);border:1px solid var(--g2);border-radius:8px;padding:14px 16px">
+
+          <!-- Shown when: Authorised Person + IS authorised signatory → mandatory upload directly -->
+          <div id="init-poa-mandatory" style="display:none">
+            <div class="doc-block">
+              <div class="doc-top">
+                <div class="doc-left"><div class="doc-ico">📜</div><div class="doc-info">
+                  <div class="doc-name">Power of Attorney (POA) <span class="doc-badge req">Required</span></div>
+                  <div class="doc-desc">Please upload your notarised POA document.</div>
+                </div></div>
+                <button class="btn-up primary" onclick="return false">↑ Upload</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shown when: Authorised Person + NOT authorised signatory → ask yes/no first -->
+          <div id="init-poa-optional" style="display:none">
+            <div class="f-label" style="margin-bottom:10px;color:var(--dark)">Do you have a Power of Attorney (POA) document? <span class="f-req">*</span></div>
+            <div class="radio-row" style="margin-bottom:12px">
+              <div class="radio-opt" id="init-poa-yes" onclick="setInitPOA(true)"><div class="r-dot"></div><div class="r-lbl">Yes</div></div>
+              <div class="radio-opt" id="init-poa-no" onclick="setInitPOA(false)"><div class="r-dot"></div><div class="r-lbl">No</div></div>
+            </div>
+            <div id="init-poa-upload" style="display:none">
+              <div class="doc-block">
+                <div class="doc-top">
+                  <div class="doc-left"><div class="doc-ico">📜</div><div class="doc-info">
+                    <div class="doc-name">Power of Attorney (POA) <span class="doc-badge req">Required</span></div>
+                    <div class="doc-desc">Please upload your notarised POA document.</div>
+                  </div></div>
+                  <button class="btn-up primary" onclick="return false">↑ Upload</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-init','st-init')">Mark as complete</button></div>
+      </div>
+    </div>
+
+    <div class="footer" id="ft0">
+      <div class="footer-l"><button class="btn-back" disabled>← Back</button><button class="btn-sl" onclick="return false">Save & continue later</button></div>
+      <button class="btn-next" onclick="goStep(1)">Next →</button>
+    </div>
+    <div class="privacy">Your information is collected on behalf of ruya, the Data Controller, and will be processed in accordance with Ruya Bank's <a href="#">Privacy Policy.</a></div>
+  </div>
+
+  <!-- ═══ SCREEN 2: COMPANY DETAILS ═══ -->
+  <div class="screen" id="sc1">
+
+    <!-- TRADE LICENSE -->
+    <div class="col-section open" id="cs-tl">
+      <div class="col-header" onclick="toggleSection('cs-tl')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-tl">○</div><div class="col-title">Registration Details</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <!-- doc-blocks: shown/hidden dynamically by applyDocMap() -->
+
+        <!-- Trade License (shown for most entities) -->
+        <div class="doc-block" id="du-tl" style="margin-top:14px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Trade License <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Current valid UAE trade license issued by DED (mainland) or the relevant Free Zone Authority. Must not be expired at time of submission.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your trade license.</div>
+            </div></div>
+            <button class="btn-up primary" id="du-tl-btn" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Certificate of Incorporation (FZE, FZCO, Financial FZ, Private JS, PJSC, JV, SPV, Trust, Under Formation) -->
+        <div class="doc-block" id="du-coi" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📜</div><div class="doc-info">
+              <div class="doc-name">Certificate of Incorporation <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Certificate of Incorporation issued by the relevant Free Zone Authority, DED, or Ministry of Economy. This is the primary source for your incorporation date.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your certificate of incorporation.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Regulatory License (Financial Institution, NBFI, Financial Free Zone) -->
+        <div class="doc-block" id="du-reg" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">🏛️</div><div class="doc-info">
+              <div class="doc-name">Regulatory License <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Valid regulatory license issued by CBUAE, DFSA (DIFC), FSRA (ADGM), SCA, or the relevant home country regulator for offshore entities.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your regulatory license.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Partnership Deed (Simple, General, Limited Liability Partnership) -->
+        <div class="doc-block" id="du-part" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Partnership Deed / Agreement <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>The signed partnership deed or agreement filed with DED or the relevant authority. This document establishes the legal structure, partner names, and profit-sharing arrangement.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your partnership deed or agreement.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Share Certificate / Ownership Structure (LLC FZ, FZE, FZCO, Financial FZ FZE) -->
+        <div class="doc-block" id="du-share" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">Share Certificate / Ownership Structure <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Share certificate(s) issued by the Free Zone Authority confirming shareholder names and ownership percentages.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your share certificate or ownership structure document.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Trust Deed (Trust / Family Office) -->
+        <div class="doc-block" id="du-trust" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Trust Deed / Foundation Charter <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>The signed Trust Deed or Foundation Charter establishing the trust or family office. Must be the latest version.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your trust deed or foundation charter.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Parent Company License + COI (Branch of Foreign Company) -->
+        <div class="doc-block" id="du-parent-lic" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">🏢</div><div class="doc-info">
+              <div class="doc-name">Trade License — Parent Company <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Valid trade license or commercial registration of the parent company from their home country. For foreign documents, attestation by the UAE Embassy in the country of origin and UAE MoFAIC is required.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the parent company's trade license or commercial registration.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- UAE Branch License (Branch of UAE Company, Branch of Foreign Company) -->
+        <div class="doc-block" id="du-branch-lic" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">UAE Branch Trade License <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>UAE branch trade license issued by the relevant emirate's DED or free zone authority.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your UAE branch trade license.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Government / Embassy specific docs -->
+        <div class="doc-block" id="du-gov" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">🏛️</div><div class="doc-info">
+              <div class="doc-name">Approval Certificate / Ministry of Finance Letter <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Approval certificate or letter from the Ministry of Finance as per Ministry directive (Notice 3738/2012), and a copy of the decree establishing the ministry or department.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the Ministry of Finance approval certificate and establishing decree.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- SPV License -->
+        <div class="doc-block" id="du-spv" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">SPV License / Registration <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>License or registration document for the Special Purpose Vehicle, issued by DIFC, ADGM, or the relevant offshore jurisdiction.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your SPV license or registration document.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- NPO License -->
+        <div class="doc-block" id="du-npo" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">NPO License / Registration <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Valid license or registration issued by the Community Development Ministry or relevant competent authority.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your NPO license or registration document.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Under Formation: Initial Approval -->
+        <div class="doc-block" id="du-init-appr" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Initial Approval / Name Reservation Certificate <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Initial approval or name reservation certificate issued by the licensing authority (mainland DED or Free Zone Authority) confirming the company is in formation.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your initial approval or name reservation certificate.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Govt: Decree Establishing Ministry (Registration Details) -->
+        <div class="doc-block" id="du-gov-decree" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">🏛️</div><div class="doc-info">
+              <div class="doc-name">Decree Establishing the Ministry / Department <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Copy of the decree or official document establishing the ministry, department, or government entity. Issued by the relevant governmental authority.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the decree establishing the ministry or department.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Embassy: Diplomatic Accreditation (Registration Details) -->
+        <div class="doc-block" id="du-embassy" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">🏛️</div><div class="doc-info">
+              <div class="doc-name">Diplomatic Accreditation / Letter from MoFAIC <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Diplomatic accreditation letter issued by the UAE Ministry of Foreign Affairs and International Cooperation (MoFAIC), confirming the mission's official status.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the diplomatic accreditation or MoFAIC letter.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Embassy: Official Decree Establishing Mission (Registration Details) -->
+        <div class="doc-block" id="du-embassy-decree" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Official Decree Establishing the Mission <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Official decree or instrument establishing the diplomatic or consular mission in the UAE.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the official decree establishing the mission.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Branch of Foreign: UAE Branch License (used as main Trade License) -->
+        <div class="doc-block" id="du-branch-uae-lic" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Valid License to Operate in the UAE <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>The UAE trade license or operating license issued to the branch by the relevant UAE authority (DED or free zone authority).</div></div>
+              </div>
+              <div class="doc-desc">Please upload the valid license to operate in the UAE.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('tl')">↑ Upload</button>
+          </div>
+        </div>
+        <div class="fg fg-2">
+          <div class="f-group"><label class="f-label">Company name <span class="f-req">*</span></label><input class="f-input" id="f-coname" placeholder="e.g. Smith & Jones LLC"></div>
+          <div class="f-group"><label class="f-label">Trade license number <span class="f-req">*</span></label><input class="f-input" id="f-tlnum" placeholder="e.g. 1234567"></div>
+          <div class="f-group"><label class="f-label">Emirate of registration <span class="f-req">*</span></label><select class="f-select" id="f-emirate-reg"><option value="">Select emirate</option><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option><option>Ras Al Khaimah</option><option>Fujairah</option><option>Umm Al Quwain</option></select></div>
+          <div class="f-group"><label class="f-label">Issuing authority <span class="f-req">*</span></label><input class="f-input" id="f-issauth" placeholder="e.g. DED, DMCC, JAFZA"></div>
+          <div class="f-group"><label class="f-label">License issue date <span class="f-req">*</span></label><input class="f-input" type="date" id="f-tlissue"></div>
+          <div class="f-group"><label class="f-label">License expiry date <span class="f-req">*</span></label><input class="f-input" type="date" id="f-tlexpiry"></div>
+          <div class="f-group span2"><label class="f-label">Date of incorporation</label><input class="f-input" type="date" id="f-incorp" style="max-width:220px"></div>
+        </div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-tl','st-tl')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <!-- BUSINESS PROFILE -->
+    <div class="col-section" id="cs-biz">
+      <div class="col-header" onclick="toggleSection('cs-biz')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-biz">○</div><div class="col-title">Business Profile</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <!-- MOA/AOA (LLC Mainland, LLC FZ, Financial FZ, PJSC, Private JS, FI, NBFI, SPV, JV) -->
+        <div class="doc-block" id="du-moa" style="margin-top:14px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">Memorandum / Articles of Association <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Latest signed Memorandum or Articles of Association, filed with the licensing authority. For foreign entities, an attested version is required.<br><br>Note: business profile and company activity fields cannot be extracted from this document and must be completed manually.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc" id="du-moa-desc">Please upload your Memorandum or Articles of Association.</div>
+            </div></div>
+            <button class="btn-up primary" id="du-moa-btn" onclick="simUp('moa')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Amended MOA/AOA — shown alongside MOA -->
+        <div class="doc-block" id="du-moa-amended" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">Amended MOA / AOA
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>If the Memorandum or Articles of Association has been amended since the original, upload the latest amendment(s) here. Only required if changes have been made after the original MOA/AOA was filed.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the amended Memorandum or Articles of Association, if applicable.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Business Plan / Profile (most entities except FI, NBFI, Govt, Embassy) -->
+        <div class="doc-block" id="du-biz-plan" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Business Plan / Business Profile <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>A document describing your company's primary activities, services, and target markets in plain English. This is the main source for the Company Profile field below.<br><br>Accepted formats: PDF, DOC, DOCX, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your business plan or business profile document.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('moa')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Share Register / Shareholder Register (PJSC, Private JS) -->
+        <div class="doc-block" id="du-share-reg" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">Shareholder Register <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Latest shareholder register showing all shareholders, number of shares held, and ownership percentages.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your latest shareholder register.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('moa')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Charter / Constitution (NPO Charity) -->
+        <div class="doc-block" id="du-charter" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">Charter / Constitution <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>The organisation's constitutional document — charter, constitution, or by-laws — as registered with the competent authority.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload your organisation's charter or constitution.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('moa')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Parent Company Shareholder Register (Branch of Foreign Company) -->
+        <div class="doc-block" id="du-parent-share" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">Shareholder Register — Parent Company <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Latest shareholder register or ownership structure document of the parent company, showing all shareholders and ownership percentages.<br><br>Accepted formats: PDF, JPG, PNG.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the parent company's shareholder register or ownership structure document.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="simUp('moa')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Govt: Ministerial Order / Governing Documents (Business Profile) -->
+        <div class="doc-block" id="du-gov-order" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Ministerial Order / Governing Documents <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Ministerial order or other official documents governing the conduct of the business relationship and authorising banking operations.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the ministerial order or governing documents.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Embassy: Official Letter on Embassy Letterhead (Business Profile) -->
+        <div class="doc-block" id="du-embassy-letter" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info">
+              <div class="doc-name">Official Letter on Embassy Letterhead <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>An official letter on embassy letterhead, signed and stamped by the Head of Mission (Ambassador or Consul General), authorising the account opening.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the official letter on embassy letterhead, signed by the Head of Mission.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Under Formation: Draft MOA (Business Profile) -->
+        <div class="doc-block" id="du-moa-draft" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">Draft Memorandum / Articles of Association <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Unsigned or draft Memorandum or Articles of Association for the company currently being formed. This will be replaced with the signed version once incorporation is complete.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the draft Memorandum or Articles of Association.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Branch of Foreign: COI of Parent Company (Business Profile) -->
+        <div class="doc-block" id="du-parent-coi" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📜</div><div class="doc-info">
+              <div class="doc-name">Certificate of Incorporation — Parent Company <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Certificate of Incorporation of the parent company from their home country. For foreign documents, attestation by the UAE Embassy in the country of origin and UAE MoFAIC is required.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the parent company's certificate of incorporation.</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Branch of Foreign: MOA of Parent Company (Business Profile) -->
+        <div class="doc-block" id="du-parent-moa" style="margin-top:8px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">📄</div><div class="doc-info">
+              <div class="doc-name">MOA / AOA — Parent Company <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Memorandum or Articles of Association of the parent company, notarised and apostilled. Required for branches of foreign companies.</div></div>
+              </div>
+              <div class="doc-desc">Please upload the parent company's Memorandum or Articles of Association (notarised/apostilled).</div>
+            </div></div>
+            <button class="btn-up primary" onclick="return false">↑ Upload</button>
+          </div>
+        </div>
+        <div class="fg fg-2" style="margin-top:14px">
+          <div class="f-group"><label class="f-label">Industry <span class="f-req">*</span></label><select class="f-select"><option value="">Select industry</option><option>Financial Services</option><option>Retail & Trade</option><option>Real Estate</option><option>Technology</option><option>Healthcare</option><option>Manufacturing</option></select></div>
+          <div class="f-group"><label class="f-label">Sub industry <span class="f-req">*</span></label><select class="f-select"><option value="">Select sub industry</option><option>Banking</option><option>Insurance</option><option>General Trading</option></select></div>
+          <div class="f-group"><label class="f-label">Primary sector <span class="f-req">*</span></label><select class="f-select"><option>Private Sector (Corporate)</option><option>Public Sector</option></select></div>
+          <div class="f-group"><label class="f-label">Customer segment <span class="f-req">*</span></label><select class="f-select"><option>Corporate</option><option>SME</option></select></div>
+          <div class="f-group"><label class="f-label">Nature of business <span class="f-req">*</span></label><select class="f-select" id="f-naturebiz"><option value="">Select activity</option><option>Trading</option><option>Services</option><option>Manufacturing</option><option>Financial Services</option></select></div>
+          <div class="f-group"><label class="f-label">CB Sub Sector <span class="f-req">*</span></label><select class="f-select"><option value="">Select</option><option>Commercial banks</option><option>Other</option></select></div>
+          <div class="f-group span2"><label class="f-label">Company profile <span class="f-req">*</span></label><textarea class="f-textarea" id="f-coprfl" placeholder="Describe your company's primary business activities, products or services offered, and the markets you serve."></textarea></div>
+        </div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-biz','st-biz')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <!-- REGISTERED ADDRESS -->
+    <div class="col-section" id="cs-addr">
+      <div class="col-header" onclick="toggleSection('cs-addr')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-addr">○</div><div class="col-title">Registered Address</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+
+        <!-- Registered Address upload + fields -->
+        <div class="doc-block" id="du-addr" style="margin-top:14px;display:none">
+          <div class="doc-top">
+            <div class="doc-left"><div class="doc-ico">🏢</div><div class="doc-info">
+              <div class="doc-name">Proof of Office Address <span class="doc-badge req">Required</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>Accepted documents</strong><ul><li>Ejari certificate (Dubai)</li><li>Tawtheeq contract (Abu Dhabi) — address must be entered manually</li><li>Utility bill (DEWA/ADDC/SEWA) — within 3 months</li><li>Free zone office / flexi-desk agreement</li></ul>Fields will be populated where readable — please review and confirm.</div></div>
+              </div>
+              <div class="doc-desc" id="du-addr-desc">Please upload your proof of office address.</div>
+            </div></div>
+            <button class="btn-up primary" id="du-addr-btn" onclick="simUp('addr')">↑ Upload</button>
+          </div>
+        </div>
+
+        <!-- Registered Address Fields -->
+        <div style="margin-top:14px">
+          <div class="f-label" style="font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--g4);margin-bottom:10px">Registered Business Address</div>
+          <div class="fg fg-2">
+            <div class="f-group span2"><label class="f-label">Address line 1 <span class="f-req">*</span></label><input class="f-input" id="f-addr1" placeholder="Building, Street"></div>
+            <div class="f-group span2"><label class="f-label">Address line 2</label><input class="f-input" id="f-addr2" placeholder="Floor, Unit, Area"></div>
+            <div class="f-group"><label class="f-label">City <span class="f-req">*</span></label><input class="f-input" id="f-city-reg" placeholder="e.g. Dubai"></div>
+            <div class="f-group"><label class="f-label">Emirate <span class="f-req">*</span></label><select class="f-select" id="f-emirate"><option value="">Select Emirate</option><option value="EMR-0001">Abu Dhabi</option><option value="EMR-0002">Ajman</option><option value="EMR-0003">Dubai</option><option value="EMR-0004">Fujairah</option><option value="EMR-0005">Ras Al Khaimah</option><option value="EMR-0006">Sharjah</option><option value="EMR-0007">Umm Al Quwain</option></select></div>
+            <div class="f-group"><label class="f-label">Country <span class="f-req">*</span></label><select class="f-select" id="f-country-reg"><option value="AE" selected>United Arab Emirates</option></select></div>
+            <div class="f-group"><label class="f-label">Nearest landmark <span class="f-req">*</span></label><input class="f-input" id="f-landmark-reg" placeholder="Building Name or Metro Station"></div>
+            <div class="f-group"><label class="f-label">Postal code</label><input class="f-input" id="f-postal" placeholder="e.g. 500001"></div>
+            <div class="f-group">
+              <label class="f-label">Primary mobile no. <span class="f-req">*</span></label>
+              <div class="phone-wrap" id="f-addr-mobile-wrap"><div class="phone-flag"><span>🇦🇪</span> +971</div><input class="f-input" id="f-addr-mobile" placeholder="50 XXX XXXX"></div>
+              <label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--g5);cursor:pointer">
+                <input type="checkbox" style="width:13px;height:13px;accent-color:var(--red)" onchange="(function(cb){var wrap=document.getElementById('f-addr-mobile-wrap');var inp=document.getElementById('f-addr-mobile');if(cb.checked){wrap.style.opacity='.4';wrap.style.pointerEvents='none';inp.value='N/A';}else{wrap.style.opacity='';wrap.style.pointerEvents='';inp.value='';}})(this)"> Not Applicable
+              </label>
+            </div>
+            <div class="f-group"><label class="f-label">Primary email ID <span class="f-req">*</span></label><input class="f-input" type="email" id="f-addr-email" placeholder="company@example.com"></div>
+          </div>
+        </div>
+
+        <!-- Communication Address checkbox -->
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--g2)">
+          <label style="display:flex;align-items:center;gap:9px;cursor:pointer;font-size:13px;font-weight:500;color:var(--dark)">
+            <input type="checkbox" id="comm-same" checked onchange="toggleCommAddr(this.checked)" style="width:15px;height:15px;accent-color:var(--red)">
+            Communication address same as registered address?
+          </label>
+        </div>
+
+        <!-- Communication Address (hidden by default since checkbox is checked) -->
+        <div id="comm-addr-block" style="display:none;margin-top:14px">
+          <div class="f-label" style="font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--g4);margin-bottom:10px">Communication Address</div>
+          <div class="fg fg-2">
+            <div class="f-group span2"><label class="f-label">Address line 1 <span class="f-req">*</span></label><input class="f-input" id="f-comm-addr1" placeholder="Building, Street"></div>
+            <div class="f-group span2"><label class="f-label">Address line 2</label><input class="f-input" id="f-comm-addr2" placeholder="Floor, Unit, Area"></div>
+            <div class="f-group"><label class="f-label">City <span class="f-req">*</span></label><input class="f-input" id="f-comm-city" placeholder="Select or type city"></div>
+            <div class="f-group"><label class="f-label">Emirate <span class="f-req">*</span></label><select class="f-select" id="f-comm-emirate"><option value="">Select Emirate</option><option value="EMR-0001">Abu Dhabi</option><option value="EMR-0002">Ajman</option><option value="EMR-0003">Dubai</option><option value="EMR-0004">Fujairah</option><option value="EMR-0005">Ras Al Khaimah</option><option value="EMR-0006">Sharjah</option><option value="EMR-0007">Umm Al Quwain</option></select></div>
+            <div class="f-group"><label class="f-label">Country <span class="f-req">*</span></label><select class="f-select"><option value="AE" selected>United Arab Emirates</option></select></div>
+            <div class="f-group"><label class="f-label">Nearest landmark</label><input class="f-input" id="f-comm-landmark" placeholder="Building Name / Metro Station"></div>
+            <div class="f-group"><label class="f-label">Postal code</label><input class="f-input" id="f-comm-postal" placeholder="e.g. 12345"></div>
+            <div class="f-group"><label class="f-label">Primary email ID <span class="f-req">*</span></label><input class="f-input" type="email" id="f-comm-email" placeholder="company@example.com"></div>
+          </div>
+        </div>
+
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-addr','st-addr')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <!-- VAT -->
+    <div class="col-section" id="cs-vat">
+      <div class="col-header" onclick="toggleSection('cs-vat')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-vat">○</div><div class="col-title">VAT Information</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <div style="margin-top:14px;margin-bottom:14px">
+          <div class="f-label" style="margin-bottom:8px">Is this company VAT registered? <span class="f-req">*</span></div>
+          <div style="display:flex;gap:20px"><label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px"><input type="radio" name="vat" value="yes" style="accent-color:var(--red)" onchange="vatT('yes')"> Yes</label><label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:13px"><input type="radio" name="vat" value="no" checked style="accent-color:var(--red)" onchange="vatT('no')"> No</label></div>
+        </div>
+        <div class="cond" id="vat-yes">
+          <div class="doc-block" id="du-vat">
+            <div class="doc-top"><div class="doc-left"><div class="doc-ico">🧾</div><div class="doc-info"><div class="doc-name">VAT Registration Certificate<div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>FTA-issued VAT registration certificate.<br><br>Fields covered: TRN number, registration date.</div></div></div><div class="doc-desc">Please upload your VAT registration certificate.</div></div></div><button class="btn-up primary" id="du-vat-btn" onclick="simUp('vat')">↑ Upload</button></div>
+          </div>
+          <div class="fg fg-2" style="margin-top:14px"><div class="f-group"><label class="f-label">TRN number <span class="f-req">*</span></label><input class="f-input" id="f-trn" placeholder="15-digit TRN"></div><div class="f-group"><label class="f-label">VAT registration date <span class="f-req">*</span></label><input class="f-input" type="date" id="f-vatdate"></div></div>
+        </div>
+        <div class="cond show" id="vat-no"><div class="f-group"><label class="f-label">Reason</label><select class="f-select" style="max-width:360px"><option>Below VAT threshold (under AED 375,000)</option><option>Newly registered company</option><option>Exempt activities only</option></select></div></div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-vat','st-vat')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <div class="footer" id="ft1"><div class="footer-l"><button class="btn-back" onclick="goStep(0)">← Back</button><button class="btn-sl" onclick="return false">Save & continue later</button></div><button class="btn-next" onclick="goStep(2)">Next →</button></div>
+  </div>
+
+  <!-- ═══ SCREEN 3: FINANCIAL ═══ -->
+  <div class="screen" id="sc2">
+
+    <!-- REVENUE -->
+    <div class="col-section open" id="cs-rev">
+      <div class="col-header" onclick="toggleSection('cs-rev')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-rev">○</div><div class="col-title">Revenue Details</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <div class="doc-block" id="du-fin" style="margin-top:14px">
+          <div class="doc-top"><div class="doc-left"><div class="doc-ico">💳</div><div class="doc-info"><div class="doc-name">Audited Financials / Bank Statement <span class="doc-badge req">Required</span><div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>What to upload</strong>Established company: most recent audited financial statements.<br>New company (under 1 year): 6-month personal bank statement of majority shareholder.</div></div></div><div class="doc-desc" id="du-fin-desc">Please upload your audited financials or bank statement.</div></div></div><button class="btn-up primary" id="du-fin-btn" onclick="simUp('fin')">↑ Upload</button></div>
+        </div>
+        <div class="fg fg-2">
+          <div class="f-group span2">
+            <label class="f-label" style="font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--g4);margin-bottom:8px">Details of source of funds <span class="f-req">*</span></label>
+            <div id="source-entries" style="border:1px solid var(--g2);border-radius:6px;overflow:hidden;background:var(--white)">
+              <div class="src-row" style="display:flex;align-items:center;border-bottom:1px solid var(--g1)">
+                <select class="f-select" style="border:none;border-radius:0;flex:1;background:transparent;box-shadow:none;outline:none;padding-right:30px" onchange="syncSource()">
+                  <option value="">Select source of funds</option>
+                  <option>Business Earnings</option>
+                  <option>Gifts or Inheritance</option>
+                  <option>Investment Income</option>
+                  <option>Other Specify</option>
+                  <option>Overseas</option>
+                  <option>Property Rental Income</option>
+                  <option>Salary</option>
+                  <option>Sale of Property</option>
+                  <option>Personal savings or investment returns</option>
+                </select>
+                <button type="button" onclick="removeSrcRow(this)" style="padding:0 14px;color:var(--g3);background:none;border:none;font-size:18px;cursor:pointer;flex-shrink:0;line-height:1" title="Remove">×</button>
+              </div>
+            </div>
+            <button type="button" onclick="addSrcRow()" style="font-size:13px;font-weight:600;color:var(--red);background:none;border:none;cursor:pointer;padding:9px 0 0;display:inline-flex;align-items:center;gap:4px">+ Add Source</button>
+            <input type="hidden" id="f-source">
+          </div>
+          <div class="f-group"><label class="f-label">Current turnover (AED) <span class="f-req">*</span></label><input class="f-input" id="f-turnover" placeholder="e.g. 500,000"></div>
+          <div class="f-group"><label class="f-label">Annual income (AED) <span class="f-req">*</span></label><input class="f-input" id="f-annincome" placeholder="e.g. 200,000"></div>
+          <div class="f-group"><label class="f-label">Ownership structure <span class="f-req">*</span>
+                <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>Ownership structure</strong>Describes the overall ownership pattern of the company — e.g. single owner, complex multi-layer structure, government-owned etc.<br><br>This is different from individual shareholder percentages, which are collected in the Shareholders step.</div></div>
+              </label>
+              <select class="f-select" id="f-ownership">
+                <option value="">Select structure</option>
+                <option value="449930000">Single natural person (≥10%)</option>
+                <option value="449930006">Two or more natural persons (≥10%)</option>
+                <option value="449930004">Complex — up to 3 layers with entities</option>
+                <option value="449930001">Complex — more than 3 layers with entities</option>
+                <option value="449930005">51%+ owned by UAE Government / Semi-Government</option>
+                <option value="449930007">51%+ owned by Foreign Government / Semi-Government</option>
+                <option value="449930002">50%+ subsidiary of UAE Public Joint Stock Company</option>
+                <option value="449930003">Other ownership structure</option>
+              </select>
+            </div>
+          <div class="f-group"><label class="f-label">Number of employees</label><input class="f-input" placeholder="e.g. 20–50"></div>
+          <div class="f-group">
+            <label class="f-label">Avg. expected transaction / annum <span class="f-req">*</span></label>
+            <select class="f-select" id="f-avgtxn">
+              <option value="">Select range</option>
+              <option value="449930000">Upto AED 3 Million</option>
+              <option value="449930001">AED 3 Million – 10 Million</option>
+              <option value="449930002">Above AED 10 Million</option>
+            </select>
+          </div>
+        </div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-rev','st-rev')">Done ✓</button></div>
+      </div>
+    </div>
+
+
+    <!-- TRANSACTIONS -->
+    <div class="col-section" id="cs-txn">
+      <div class="col-header" onclick="toggleSection('cs-txn')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-txn">○</div><div class="col-title">Transaction Volumes (Monthly)</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <div class="fg fg-3" style="margin-top:14px">
+          <div class="f-group">
+            <label class="f-label">Expected transactions/month <span class="f-req">*</span>
+              <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>Expected No. of Transactions/Month</strong>Provide the total expected number of inward and outward transactions per month.<br><br>Note: This value cannot be greater than the sum of your expected inward and outward monthly transfers.</div></div>
+            </label>
+            <select class="f-select"><option value="">Select range</option><option>Less than 50</option><option>50–200</option><option>200–500</option><option>Above 500</option></select>
+          </div>
+          <div class="f-group">
+            <label class="f-label">Money coming in / month (AED) <span class="f-req">*</span>
+              <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip left"><strong>Money Coming In</strong>Total value (in AED) of funds you expect to receive into the account each month — e.g. customer payments, overseas remittances, investment proceeds.</div></div>
+            </label>
+            <input class="f-input" type="number" placeholder="e.g. 300,000">
+          </div>
+          <div class="f-group">
+            <label class="f-label">Money going out / month (AED) <span class="f-req">*</span>
+              <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip left"><strong>Money Going Out</strong>Total value (in AED) of funds you expect to send out of the account each month — e.g. supplier payments, salaries, overseas transfers.</div></div>
+            </label>
+            <input class="f-input" type="number" placeholder="e.g. 150,000">
+          </div>
+        </div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-txn','st-txn')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <!-- SUPPLIERS -->
+    <div class="col-section" id="cs-sup">
+      <div class="col-header" onclick="toggleSection('cs-sup')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-sup">○</div><div class="col-title">Top 5 Suppliers</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <div style="margin:14px 0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;margin-bottom:8px"><input type="radio" name="sup" value="yes" style="accent-color:var(--red)" onchange="supT('yes')"> I have suppliers</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="radio" name="sup" value="no" checked style="accent-color:var(--red)" onchange="supT('no')"> I do not have suppliers</label>
+        </div>
+        <div class="cond" id="sup-yes">
+          <div id="sup-entries">
+            <div class="fg fg-3 entry-row" style="margin-bottom:8px">
+              <div class="f-group"><label class="f-label">Supplier name <span class="f-req">*</span></label><input class="f-input" placeholder="Company name"></div>
+              <div class="f-group"><label class="f-label">Country <span class="f-req">*</span></label><select class="f-select"><option value="">Select</option><option>UAE</option><option>India</option><option>China</option><option>USA</option><option>UK</option><option>Other</option></select></div>
+              <div class="f-group"><label class="f-label">% of purchases <span class="f-req">*</span></label><input class="f-input" type="number" placeholder="%"></div>
+            </div>
+          </div>
+          <button type="button" onclick="addEntry('sup-entries','Supplier')" class="btn-add-entry">+ Add another supplier</button>
+        </div>
+        <div class="cond show" id="sup-no"><div class="f-group"><label class="f-label">Reason <span class="f-req">*</span></label><select class="f-select" style="max-width:360px"><option value="">Select reason</option><option>Service-based (no goods purchased)</option><option>Newly established</option><option>Direct manufacturer</option></select></div></div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sup','st-sup')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div class="col-section" id="cs-cust">
+      <div class="col-header" onclick="toggleSection('cs-cust')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-cust">○</div><div class="col-title">Top 5 Customers</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <div style="margin:14px 0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;margin-bottom:8px"><input type="radio" name="cust" value="yes" style="accent-color:var(--red)" onchange="custT('yes')"> I have customers</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="radio" name="cust" value="no" checked style="accent-color:var(--red)" onchange="custT('no')"> I do not have defined customers</label>
+        </div>
+        <div class="cond" id="cust-yes">
+          <div id="cust-entries">
+            <div class="fg fg-3 entry-row" style="margin-bottom:8px">
+              <div class="f-group"><label class="f-label">Customer name <span class="f-req">*</span></label><input class="f-input" placeholder="Company name"></div>
+              <div class="f-group"><label class="f-label">Country <span class="f-req">*</span></label><select class="f-select"><option value="">Select</option><option>UAE</option><option>India</option><option>Saudi Arabia</option><option>UK</option><option>Other</option></select></div>
+              <div class="f-group"><label class="f-label">% of business <span class="f-req">*</span></label><input class="f-input" type="number" placeholder="%"></div>
+            </div>
+          </div>
+          <button type="button" onclick="addEntry('cust-entries','Customer')" class="btn-add-entry">+ Add another customer</button>
+        </div>
+        <div class="cond show" id="cust-no"><div class="f-group"><label class="f-label">Reason</label><select class="f-select" style="max-width:360px"><option value="">Select reason</option><option>B2C walk-in customers</option><option>Newly established</option><option>Marketplace based</option></select></div></div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-cust','st-cust')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <!-- BANKS -->
+    <div class="col-section" id="cs-bank">
+      <div class="col-header" onclick="toggleSection('cs-bank')">
+        <div class="col-left"><div class="st-dot st-empty" id="st-bank">○</div><div class="col-title">Existing Bank Accounts</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <div style="margin:14px 0">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;margin-bottom:8px"><input type="radio" name="bank" value="yes" style="accent-color:var(--red)" onchange="bankT('yes')"> I have a bank account</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px"><input type="radio" name="bank" value="no" checked style="accent-color:var(--red)" onchange="bankT('no')"> I do not have a bank account</label>
+        </div>
+        <div class="cond" id="bank-yes">
+          <div id="bank-entries">
+            <div class="fg fg-2 entry-row" style="margin-bottom:8px">
+              <div class="f-group"><label class="f-label">Bank name <span class="f-req">*</span></label><input class="f-input" placeholder="e.g. Emirates NBD, ADCB, Mashreq"></div>
+              <div class="f-group"><label class="f-label">IBAN</label><input class="f-input" placeholder="AE..."></div>
+            </div>
+          </div>
+          <button type="button" onclick="addEntry('bank-entries','Bank')" class="btn-add-entry">+ Add another bank</button>
+        </div>
+        <div class="cond show" id="bank-no"><div class="f-group"><label class="f-label">Reason</label><input class="f-input" placeholder="e.g. Newly registered company" style="max-width:360px"></div></div>
+        <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-bank','st-bank')">Done ✓</button></div>
+      </div>
+    </div>
+
+    <div class="footer" id="ft2"><div class="footer-l"><button class="btn-back" onclick="goStep(1)">← Back</button><button class="btn-sl" onclick="return false">Save & continue later</button></div><button class="btn-next" onclick="goStep(3)">Next →</button></div>
+  </div>
+
+  <!-- ═══ SCREEN 4: SHAREHOLDERS ═══ -->
+  <div class="screen" id="sc3">
+
+    <!-- LANDING: empty state + add button -->
+    <div id="sh-landing">
+      <div class="notice amber" style="margin-bottom:16px">
+        <span class="n-ico">!</span>
+        <span><strong>Please note:</strong> At least 1 shareholder and 1 authorised signatory must be added.</span>
+      </div>
+      <div class="sh-empty-card" onclick="openAddShareholder()">
+        <span style="font-size:22px;color:var(--g3)">＋</span>
+        <span style="font-size:13.5px;font-weight:500;color:var(--red)">Add shareholders</span>
+      </div>
+    </div>
+
+    <!-- ADDED SHAREHOLDERS LIST -->
+    <div id="sh-list" style="display:none;margin-bottom:80px">
+      <div id="sh-cards"></div>
+      <button class="sh-add-more" onclick="openAddShareholder()">＋ Add another shareholder</button>
+    </div>
+
+    <!-- ADD/EDIT PANEL (slides in) -->
+    <div id="sh-panel" style="display:none">
+      <div class="sh-panel-head">
+        <div id="sh-panel-title" style="font-size:14px;font-weight:600;color:var(--red)">Person 1: Enter details</div>
+        <button class="sh-cancel" onclick="closeSHPanel()">✕ Cancel</button>
+      </div>
+
+      <!-- SECTION 1: SHAREHOLDER TYPE -->
+      <div class="col-section open" id="cs-sh-type">
+        <div class="col-header" onclick="toggleSection('cs-sh-type')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-type">○</div><div class="col-title">Shareholder Type</div></div>
+          <div class="col-chevron">▲</div>
+        </div>
+        <div class="col-body">
+          <div class="fg fg-2" style="margin-top:14px">
+            <div class="f-group">
+              <label class="f-label">Shareholder type <span class="f-req">*</span></label>
+              <select class="f-select" id="sh-type-select" onchange="setSHType(this.value)">
+                <option value="">Select type</option>
+                <option value="individual">Individual</option>
+                <option value="corporate">Corporate Entity</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Designation -->
+          <div class="fg fg-2" style="margin-top:16px">
+            <div class="f-group">
+              <label class="f-label">Role / Relationship Type <span class="f-req">*</span></label>
+              <select class="f-select" id="sh-designation" onchange="onRoleChange(this.value)">
+                <option value="">Select role</option>
+                <option value="405">Shareholder</option>
+                <option value="401">Authorised Signatory</option>
+                <option value="400">Admin</option>
+                <option value="409">General Manager</option>
+                <option value="410">Owner</option>
+                <option value="411">CFO</option>
+                <option value="404">Power of Attorney</option>
+                <option value="50">Cheque Signatory</option>
+                <option value="402">Contact Person</option>
+                <option value="8">Others</option>
+              </select>
+            </div>
+            <div class="f-group">
+              <label class="f-label">Ownership % <span class="f-req">*</span></label>
+              <input class="f-input" id="sh-ownership" type="number" min="0" max="100" placeholder="e.g. 51">
+            </div>
+          </div>
+
+          <!-- Is authorised signatory — inline radio style matching initiator -->
+          <div id="sh-signatory-row" style="margin-top:14px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <span style="font-size:13px;color:var(--dark)">Is this shareholder also an authorised signatory?</span>
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px;white-space:nowrap">
+                <input type="radio" name="sh-sig" id="sh-sig-yes" value="yes" style="accent-color:var(--red);width:14px;height:14px" onchange="setSHSignatory(true)"> Yes
+              </label>
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:13px;white-space:nowrap">
+                <input type="radio" name="sh-sig" id="sh-sig-no" value="no" style="accent-color:var(--red);width:14px;height:14px" onchange="setSHSignatory(false)"> No
+              </label>
+            </div>
+          </div>
+
+          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-type','st-sh-type')">Done ✓</button></div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: IDENTITY VERIFICATION (Individual) -->
+      <div class="col-section" id="cs-sh-identity" style="">
+        <div class="col-header" onclick="toggleSection('cs-sh-identity')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-identity">○</div><div class="col-title">Identity Verification</div></div>
+          <div class="col-chevron">▼</div>
+        </div>
+        <div class="col-body">
+          <!-- Residency radio -->
+          <div style="margin-top:14px;margin-bottom:16px">
+            <div class="f-label" style="margin-bottom:8px">Residential status <span class="f-req">*</span>
+              <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip"><strong>Residential status</strong>Resident: has a valid UAE Emirates ID.<br>Non-Resident: based outside the UAE — passport required.</div></div>
+            </div>
+            <div class="radio-row">
+              <div class="radio-opt sel" id="sh-res-r" onclick="setPanelRes('resident')">
+                <div class="r-dot"></div>
+                <div><div class="r-lbl">Resident</div><div class="r-sub">Has Emirates ID</div></div>
+              </div>
+              <div class="radio-opt" id="sh-res-nr" onclick="setPanelRes('nonresident')">
+                <div class="r-dot"></div>
+                <div><div class="r-lbl">Non-Resident</div><div class="r-sub">Does not have Emirates ID</div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EID upload (resident) -->
+          <div id="sh-eid-block">
+            <div class="doc-block" id="sh-eid-front-block" style="margin-bottom:8px">
+              <div class="doc-top">
+                <div class="doc-left"><div class="doc-ico">🪪</div><div class="doc-info">
+                  <div class="doc-name">Emirates ID — Front <span class="doc-badge req">Required</span>
+                    <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip">Clear scan of the front side of your Emirates ID. Must be valid and unexpired.</div></div>
+                  </div>
+                  <div class="doc-desc" id="sh-eid-front-desc">Upload the front side of your Emirates ID.</div>
+                </div></div>
+                <button class="btn-up primary" id="sh-eid-front-btn" onclick="simEidSide('front')">↑ Upload</button>
+              </div>
+            </div>
+            <div class="doc-block" id="sh-eid-back-block" style="margin-bottom:16px">
+              <div class="doc-top">
+                <div class="doc-left"><div class="doc-ico">🪪</div><div class="doc-info">
+                  <div class="doc-name">Emirates ID — Back <span class="doc-badge req">Required</span>
+                    <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip">Clear scan of the back side of your Emirates ID.</div></div>
+                  </div>
+                  <div class="doc-desc" id="sh-eid-back-desc">Upload the back side of your Emirates ID.</div>
+                </div></div>
+                <button class="btn-up primary" id="sh-eid-back-btn" onclick="simEidSide('back')">↑ Upload</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passport upload (non-resident) -->
+          <div id="sh-ppt-block" style="display:none">
+            <div class="doc-block" style="margin-bottom:16px">
+              <div class="doc-top">
+                <div class="doc-left"><div class="doc-ico">🛂</div><div class="doc-info">
+                  <div class="doc-name">Passport <span class="doc-badge req">Required</span>
+                    <div class="info-wrap"><button class="info-btn">i</button><div class="tooltip">Clear scan of passport biodata page. Minimum 6 months validity. Fields will be pre-populated from this document.</div></div>
+                  </div>
+                  <div class="doc-desc">Please upload your passport biodata page.</div>
+                </div></div>
+                <button class="btn-up primary" onclick="return false">↑ Upload</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Information -->
+          <div style="font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--g4);margin-bottom:10px">Personal Information</div>
+          <div class="fg fg-2">
+            <div class="f-group"><label class="f-label">First name <span class="f-req">*</span></label><input class="f-input" id="sh-p-first" placeholder="e.g. Ahmed"></div>
+            <div class="f-group"><label class="f-label">Last name <span class="f-req">*</span></label><input class="f-input" id="sh-p-last" placeholder="e.g. Al Mansouri"></div>
+            <div class="f-group" id="sh-eid-num-row">
+              <label class="f-label">Emirates ID number <span class="f-req">*</span></label>
+              <input class="f-input" id="sh-p-eid" placeholder="784-XXXX-XXXXXXX-X">
+            </div>
+            <div class="f-group" id="sh-ppt-num-row" style="display:none">
+              <label class="f-label">Passport number <span class="f-req">*</span></label>
+              <input class="f-input" id="sh-p-ppt" placeholder="e.g. A1234567">
+            </div>
+            <div class="f-group"><label class="f-label">Nationality <span class="f-req">*</span></label><select class="f-select" id="sh-p-nat"><option value="">Select</option><option>UAE</option><option>Indian</option><option>Pakistani</option><option>British</option><option>American</option><option>Egyptian</option><option>Other</option></select></div>
+            <div class="f-group"><label class="f-label">Date of birth <span class="f-req">*</span></label><input class="f-input" type="date" id="sh-p-dob"></div>
+            <div class="f-group"><label class="f-label">Country of birth <span class="f-req">*</span></label><select class="f-select"><option value="">Select</option><option>UAE</option><option>India</option><option>Pakistan</option><option>UK</option><option>USA</option><option>Egypt</option><option>Other</option></select></div>
+            <div class="f-group"><label class="f-label">Issue date <span class="f-req">*</span></label><input class="f-input" type="date" id="sh-p-issue"></div>
+            <div class="f-group"><label class="f-label">Expiry date <span class="f-req">*</span></label><input class="f-input" type="date" id="sh-p-expiry"></div>
+            <div class="f-group"><label class="f-label">Email <span class="f-req">*</span></label><input class="f-input" type="email" id="sh-p-email" placeholder="email@example.com"></div>
+            <div class="f-group"><label class="f-label">Mobile number <span class="f-req">*</span></label><div class="phone-wrap"><div class="phone-flag"><span>🇦🇪</span> +971</div><input class="f-input" id="sh-p-mobile" placeholder="50 XXX XXXX"></div></div>
+          </div>
+          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-identity','st-sh-identity')">Done ✓</button></div>
+        </div>
+      </div>
+
+      <!-- SECTION 2b: CORPORATE ENTITY IDENTITY -->
+      <div class="col-section" id="cs-sh-corp" style="display:none">
+        <div class="col-header" onclick="toggleSection('cs-sh-corp')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-corp">○</div><div class="col-title">Entity Details</div></div>
+          <div class="col-chevron">▼</div>
+        </div>
+        <div class="col-body">
+
+          <!-- Company Information -->
+          <div class="sec-lbl" style="margin-top:14px">Company Information</div>
+          <div class="fg fg-2">
+            <div class="f-group span2">
+              <label class="f-label">Company name <span class="f-req">*</span></label>
+              <input class="f-input" id="sh-corp-name" placeholder="Legal company name">
+            </div>
+            <div class="f-group">
+              <label class="f-label">Company type <span class="f-req">*</span></label>
+              <select class="f-select" id="sh-corp-type">
+                <option value="">Select type</option>
+                <option value="1">LLC — Mainland</option>
+                <option value="2">LLC — Free Zone</option>
+                <option value="3">Free Zone Establishment (FZE)</option>
+                <option value="4">Free Zone Company (FZCO)</option>
+                <option value="5">Private Joint Stock Company</option>
+                <option value="6">Public Joint Stock Company (PJSC)</option>
+                <option value="7">Sole Proprietorship</option>
+                <option value="8">General Partnership</option>
+                <option value="9">Limited Liability Partnership</option>
+                <option value="10">Branch of Foreign Company</option>
+                <option value="11">Special Purpose Vehicle (SPV)</option>
+                <option value="12">Trust / Family Office</option>
+                <option value="13">Other</option>
+              </select>
+            </div>
+            <div class="f-group">
+              <label class="f-label">Country of incorporation <span class="f-req">*</span></label>
+              <select class="f-select" id="sh-corp-country">
+                <option value="">Select country</option>
+                <option value="AE">United Arab Emirates</option>
+                <option value="IN">India</option>
+                <option value="GB">United Kingdom</option>
+                <option value="US">United States</option>
+                <option value="SA">Saudi Arabia</option>
+                <option value="KY">Cayman Islands</option>
+                <option value="VG">British Virgin Islands</option>
+                <option value="SG">Singapore</option>
+                <option value="CN">China</option>
+                <option value="OT">Other</option>
+              </select>
+            </div>
+            <div class="f-group">
+              <label class="f-label">Company start date <span class="f-req">*</span></label>
+              <input class="f-input" type="date" id="sh-corp-startdate">
+            </div>
+          </div>
+
+          <!-- Trade License -->
+          <div class="sec-lbl">Trade License</div>
+          <div class="fg fg-2">
+            <div class="f-group span2">
+              <label class="f-label">Trade license number <span class="f-req">*</span></label>
+              <input class="f-input" id="sh-corp-tl-no" placeholder="e.g. CN-12345678">
+            </div>
+            <div class="f-group">
+              <label class="f-label">Issue date <span class="f-req">*</span></label>
+              <input class="f-input" type="date" id="sh-corp-tl-issue">
+            </div>
+            <div class="f-group">
+              <label class="f-label">Expiry date <span class="f-req">*</span></label>
+              <input class="f-input" type="date" id="sh-corp-tl-expiry">
+            </div>
+          </div>
+
+          <!-- Business Information -->
+          <div class="sec-lbl">Business Information</div>
+          <div class="fg fg-2">
+            <div class="f-group">
+              <label class="f-label">No. of employees <span class="f-req">*</span></label>
+              <select class="f-select" id="sh-corp-employees">
+                <option value="">Select range</option>
+                <option value="1-10">1 – 10</option>
+                <option value="11-50">11 – 50</option>
+                <option value="51-100">51 – 100</option>
+                <option value="101-250">101 – 250</option>
+                <option value="251-500">251 – 500</option>
+                <option value="500+">500+</option>
+              </select>
+            </div>
+            <div class="f-group">
+              <label class="f-label">Annual turnover (AED) <span class="f-req">*</span></label>
+              <select class="f-select" id="sh-corp-turnover">
+                <option value="">Select range</option>
+                <option value="<500K">Less than AED 500,000</option>
+                <option value="500K-1M">AED 500,000 – 1,000,000</option>
+                <option value="1M-5M">AED 1,000,000 – 5,000,000</option>
+                <option value="5M-10M">AED 5,000,000 – 10,000,000</option>
+                <option value="10M-50M">AED 10,000,000 – 50,000,000</option>
+                <option value=">50M">More than AED 50,000,000</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Registered Address -->
+          <div class="sec-lbl">Registered Address</div>
+          <div class="fg fg-2">
+            <div class="f-group span2">
+              <label class="f-label">Address line 1 <span class="f-req">*</span></label>
+              <input class="f-input" id="sh-corp-addr1" placeholder="Building name, floor, unit">
+            </div>
+            <div class="f-group span2">
+              <label class="f-label">Address line 2</label>
+              <input class="f-input" id="sh-corp-addr2" placeholder="Street, area">
+            </div>
+            <div class="f-group">
+              <label class="f-label">City <span class="f-req">*</span></label>
+              <input class="f-input" id="sh-corp-city" placeholder="e.g. Dubai">
+            </div>
+            <div class="f-group">
+              <label class="f-label">Emirate <span class="f-req">*</span></label>
+              <select class="f-select" id="sh-corp-emirates">
+                <option value="">Select Emirate</option>
+                <option value="EMR-0001">Abu Dhabi</option>
+                <option value="EMR-0002">Ajman</option>
+                <option value="EMR-0003">Dubai</option>
+                <option value="EMR-0004">Fujairah</option>
+                <option value="EMR-0005">Ras Al Khaimah</option>
+                <option value="EMR-0006">Sharjah</option>
+                <option value="EMR-0007">Umm Al Quwain</option>
+              </select>
+            </div>
+            <div class="f-group">
+              <label class="f-label">P.O. Box</label>
+              <input class="f-input" id="sh-corp-pobox" placeholder="e.g. 12345">
+            </div>
+            <div class="f-group">
+              <label class="f-label">Nearest landmark</label>
+              <input class="f-input" id="sh-corp-landmark" placeholder="e.g. Near Mall of Emirates">
+            </div>
+          </div>
+
+          <!-- Contact Information -->
+          <div class="sec-lbl">Contact Information</div>
+          <div class="fg fg-2">
+            <div class="f-group">
+              <label class="f-label">Mobile number <span class="f-req">*</span></label>
+              <div class="phone-wrap"><div class="phone-flag"><span>🇦🇪</span> +971</div><input class="f-input" id="sh-corp-mobile" placeholder="50 XXX XXXX"></div>
+            </div>
+            <div class="f-group">
+              <label class="f-label">Email <span class="f-req">*</span></label>
+              <input class="f-input" type="email" id="sh-corp-email" placeholder="contact@company.com">
+            </div>
+          </div>
+
+          <!-- Tax Information -->
+          <div class="sec-lbl">Tax Information</div>
+          <div class="toggle-row">
+            <div><div class="tgl-lbl">Does this entity have a Tax Identification Number (TIN)?</div></div>
+            <label class="toggle"><input type="checkbox" id="sh-corp-has-tin" onchange="toggleCorpTIN(this.checked)"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+          </div>
+          <div class="cond" id="sh-corp-tin-cond">
+            <div class="fg fg-2" style="margin-top:8px">
+              <div class="f-group">
+                <label class="f-label">Tax Identification Number <span class="f-req">*</span></label>
+                <input class="f-input" id="sh-corp-tin" placeholder="e.g. TIN123456789">
+              </div>
+            </div>
+          </div>
+
+          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-corp','st-sh-corp')">Done ✓</button></div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: RESIDENTIAL ADDRESS -->
+      <div class="col-section" id="cs-sh-resaddr-p">
+        <div class="col-header" onclick="toggleSection('cs-sh-resaddr-p')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-resaddr-p">○</div><div class="col-title">Residential Address</div></div>
+          <div class="col-chevron">▼</div>
+        </div>
+        <div class="col-body">
+          <div class="doc-block" style="margin-top:14px;margin-bottom:16px">
+            <div class="doc-top">
+              <div class="doc-left"><div class="doc-ico">🏠</div><div class="doc-info">
+                <div class="doc-name">Proof of Residential Address <span class="doc-badge req">Required</span></div>
+                <div class="doc-desc">Upload a document confirming this person's residential address. The fields below will be populated where readable.</div>
+              </div></div>
+              <button class="btn-up primary" onclick="return false">↑ Upload</button>
+            </div>
+          </div>
+
+          <!-- UAE Resident address fields -->
+          <div id="sh-addr-resident" class="fg fg-2">
+            <div class="f-group"><label class="f-label">Building name <span class="f-req">*</span></label><input class="f-input" placeholder="e.g. Marina Tower"></div>
+            <div class="f-group"><label class="f-label">Villa / Flat no.</label><input class="f-input" placeholder="e.g. Flat 304"></div>
+            <div class="f-group"><label class="f-label">Street <span class="f-req">*</span></label><input class="f-input" placeholder="e.g. Sheikh Zayed Road"></div>
+            <div class="f-group"><label class="f-label">City <span class="f-req">*</span></label><input class="f-input" placeholder="e.g. Dubai"></div>
+            <div class="f-group"><label class="f-label">Emirate <span class="f-req">*</span></label><select class="f-select"><option value="">Select Emirate</option><option value="EMR-0001">Abu Dhabi</option><option value="EMR-0002">Ajman</option><option value="EMR-0003">Dubai</option><option value="EMR-0004">Fujairah</option><option value="EMR-0005">Ras Al Khaimah</option><option value="EMR-0006">Sharjah</option><option value="EMR-0007">Umm Al Quwain</option></select></div>
+            <div class="f-group"><label class="f-label">Country</label><input class="f-input" value="United Arab Emirates" readonly style="background:var(--g1);color:var(--g5)"></div>
+            <div class="f-group"><label class="f-label">Postal code</label><input class="f-input" placeholder="e.g. 12345"></div>
+          </div>
+
+          <!-- Non-resident address fields (international format) -->
+          <div id="sh-addr-nonresident" class="fg fg-2" style="display:none">
+            <div class="f-group"><label class="f-label">Building name / Block</label><input class="f-input" placeholder="Building or block name"></div>
+            <div class="f-group"><label class="f-label">Villa / Flat / Unit no.</label><input class="f-input" placeholder="e.g. Flat 5A, Unit 201"></div>
+            <div class="f-group"><label class="f-label">Street <span class="f-req">*</span></label><input class="f-input" placeholder="Street name and number"></div>
+            <div class="f-group"><label class="f-label">City <span class="f-req">*</span></label><input class="f-input" placeholder="City"></div>
+            <div class="f-group"><label class="f-label">State / Province</label><input class="f-input" placeholder="State, Province or Region"></div>
+            <div class="f-group"><label class="f-label">Country <span class="f-req">*</span></label><select class="f-select"><option value="">Select Country</option><option>India</option><option>Pakistan</option><option>UK</option><option>USA</option><option>Saudi Arabia</option><option>Egypt</option><option>Jordan</option><option>Lebanon</option><option>Philippines</option><option>Other</option></select></div>
+            <div class="f-group"><label class="f-label">Postal / ZIP code</label><input class="f-input" placeholder="Postal or ZIP code"></div>
+          </div>
+
+          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-resaddr-p','st-sh-resaddr-p')">Done ✓</button></div>
+        </div>
+      </div>
+
+            <!-- SECTION 4: TAX & CITIZENSHIP -->
+      <div class="col-section" id="cs-sh-tax-p">
+        <div class="col-header" onclick="toggleSection('cs-sh-tax-p')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-tax-p">○</div><div class="col-title">Tax & Citizenship</div></div>
+          <div class="col-chevron">▼</div>
+        </div>
+        <div class="col-body" style="padding-top:10px">
+          <div class="toggle-row">
+            <div><div class="tgl-lbl">Subject to tax in other countries?</div></div>
+            <label class="toggle"><input type="checkbox" onchange="document.getElementById('sh-taxcountry-p').classList.toggle('show',this.checked)"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+          </div>
+          <div class="cond" id="sh-taxcountry-p">
+            <div class="fg fg-2" style="margin-bottom:8px">
+              <div class="f-group"><label class="f-label">Tax residency country</label><select class="f-select"><option value="">Select country</option><option>India</option><option>UAE</option><option>USA</option><option>UK</option><option>Pakistan</option><option>Other</option></select></div>
+            </div>
+          </div>
+          <div class="toggle-row">
+            <div><div class="tgl-lbl">Has TIN number?</div></div>
+            <label class="toggle"><input type="checkbox" onchange="var a=document.getElementById('sh-tin-yes-p'),b=document.getElementById('sh-tin-no-p');a.classList.toggle('show',this.checked);b.classList.toggle('show',!this.checked)"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+          </div>
+          <div class="cond" id="sh-tin-yes-p"><div class="fg fg-2" style="margin-bottom:8px"><div class="f-group"><label class="f-label">TIN number</label><input class="f-input" placeholder="e.g. 1821y6840961"></div></div></div>
+          <div class="cond show" id="sh-tin-no-p"><div class="f-group" style="margin-bottom:8px"><label class="f-label">Reason TIN not available</label><select class="f-select" style="max-width:340px"><option>Country does not issue TINs</option><option>Not yet obtained</option><option>Not required in residence country</option></select></div></div>
+          <div class="toggle-row">
+            <div><div class="tgl-lbl">Citizen of another country?</div></div>
+            <label class="toggle"><input type="checkbox" onchange="document.getElementById('sh-othcit-p').classList.toggle('show',this.checked)"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+          </div>
+          <div class="cond" id="sh-othcit-p">
+            <div class="fg fg-2" style="margin-bottom:8px">
+              <div class="f-group"><label class="f-label">Other citizenship country</label><select class="f-select"><option value="">Select country</option><option>India</option><option>Pakistan</option><option>UK</option><option>USA</option><option>Egypt</option><option>Other</option></select></div>
+            </div>
+            <div class="doc-block" style="margin-top:8px;margin-bottom:8px">
+              <div class="doc-top">
+                <div class="doc-left"><div class="doc-ico">🛂</div><div class="doc-info">
+                  <div class="doc-name">Passport — Other Citizenship <span class="doc-badge req">Required</span></div>
+                  <div class="doc-desc">Please upload the passport for the other citizenship country.</div>
+                </div></div>
+                <button class="btn-up primary" onclick="return false">↑ Upload</button>
+              </div>
+            </div>
+          </div>
+          <div class="done-btn"><button class="btn-done-section" onclick="saveShareholder()">Save Shareholder ✓</button></div>
+        </div>
+      </div>
+
+    </div><!-- /sh-panel -->
+
+    <div class="footer" id="ft3">
+      <div class="footer-l"><button class="btn-back" onclick="goStep(2)">← Back</button><button class="btn-sl" onclick="return false">Save & continue later</button></div>
+      <button class="btn-next" onclick="goStep(4)">Next →</button>
+    </div>
+  </div>
+
+>
+  <!-- ═══ SCREEN 5: REVIEW ═══ -->
+  <div class="screen" id="sc4">
+    <!-- INITIATOR DETAILS -->
+    <div class="col-section open" id="rv-sec-init">
+      <div class="col-header" onclick="toggleSection('rv-sec-init')">
+        <div class="col-left"><div class="st-dot st-done">✓</div><div class="col-title">Initiator details</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><button class="rv-edit" onclick="goStep(0);event.stopPropagation()">Edit</button><div class="col-chevron">▼</div></div>
+      </div>
+      <div class="col-body">
+        <div class="rv-grid" style="margin-top:12px">
+          <div class="rv-item"><div class="rv-key">Role</div><div class="rv-val" id="rv-role">—</div></div>
+          <div class="rv-item"><div class="rv-key">Business type</div><div class="rv-val" id="rv-biz">—</div></div>
+          <div class="rv-item"><div class="rv-key">Name</div><div class="rv-val" id="rv-name">—</div></div>
+          <div class="rv-item"><div class="rv-key">Email</div><div class="rv-val" id="rv-email">—</div></div>
+          <div class="rv-item"><div class="rv-key">Mobile</div><div class="rv-val" id="rv-mobile">—</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- COMPANY DETAILS -->
+    <div class="col-section" id="rv-sec-co">
+      <div class="col-header" onclick="toggleSection('rv-sec-co')">
+        <div class="col-left"><div class="st-dot st-done">✓</div><div class="col-title">Company details</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><button class="rv-edit" onclick="goStep(1);event.stopPropagation()">Edit</button><div class="col-chevron">▼</div></div>
+      </div>
+      <div class="col-body">
+        <div class="rv-grid" style="margin-top:12px">
+          <div class="rv-item"><div class="rv-key">Company name</div><div class="rv-val" id="rv-coname">—</div></div>
+          <div class="rv-item"><div class="rv-key">Trade license no.</div><div class="rv-val" id="rv-tlnum">—</div></div>
+          <div class="rv-item"><div class="rv-key">Issuing authority</div><div class="rv-val" id="rv-issauth">—</div></div>
+          <div class="rv-item"><div class="rv-key">Emirate</div><div class="rv-val" id="rv-emirate">—</div></div>
+          <div class="rv-item"><div class="rv-key">License issue date</div><div class="rv-val" id="rv-tlissue">—</div></div>
+          <div class="rv-item"><div class="rv-key">License expiry date</div><div class="rv-val" id="rv-tlexpiry">—</div></div>
+        </div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--g1)">
+          <div style="font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--g4);margin-bottom:8px">Documents uploaded</div>
+          <div id="rv-co-docs" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+      </div>
+    </div>
+    <!-- FINANCIAL DETAILS -->
+    <div class="col-section" id="rv-sec-fin">
+      <div class="col-header" onclick="toggleSection('rv-sec-fin')">
+        <div class="col-left"><div class="st-dot st-done">✓</div><div class="col-title">Financial details</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><button class="rv-edit" onclick="goStep(2);event.stopPropagation()">Edit</button><div class="col-chevron">▼</div></div>
+      </div>
+      <div class="col-body">
+        <div class="rv-grid" style="margin-top:12px">
+          <div class="rv-item"><div class="rv-key">Source of income</div><div class="rv-val" id="rv-source">—</div></div>
+          <div class="rv-item"><div class="rv-key">Current turnover (AED)</div><div class="rv-val" id="rv-turnover">—</div></div>
+          <div class="rv-item"><div class="rv-key">Annual income (AED)</div><div class="rv-val" id="rv-income">—</div></div>
+          <div class="rv-item"><div class="rv-key">Financials document</div><div class="rv-val" id="rv-fin-doc">—</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- SHAREHOLDERS -->
+    <div class="col-section" id="rv-sec-sh">
+      <div class="col-header" onclick="toggleSection('rv-sec-sh')">
+        <div class="col-left"><div class="st-dot st-done">✓</div><div class="col-title">Shareholders &amp; authorised signatories</div></div>
+        <div style="display:flex;align-items:center;gap:10px"><button class="rv-edit" onclick="goStep(3);event.stopPropagation()">Edit</button><div class="col-chevron">▼</div></div>
+      </div>
+      <div class="col-body">
+        <div id="rv-shareholders" style="margin-top:12px"></div>
+      </div>
+    </div>
+    <!-- ADDITIONAL DOCUMENTS -->
+    <div class="col-section" id="rv-sec-docs">
+      <div class="col-header" onclick="toggleSection('rv-sec-docs')">
+        <div class="col-left"><div class="st-dot st-partial" id="rv-docs-dot">⏸</div><div class="col-title">Additional documents</div></div>
+        <div class="col-chevron">▼</div>
+      </div>
+      <div class="col-body">
+        <p style="font-size:12.5px;color:var(--g5);margin:12px 0 10px">The following compliance forms must be completed before submission.</p>
+        <div id="rv-docs"></div>
+      </div>
+    </div>
+    <!-- DECLARATIONS -->
+    <div style="background:var(--white);border:1px solid var(--g2);border-radius:8px;padding:16px 18px;margin-bottom:10px">
+      <div style="font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--g4);margin-bottom:14px">Declarations &amp; consent</div>
+      <div class="toggle-row">
+        <div><div class="tgl-lbl">I agree to the Terms &amp; Conditions</div><div class="tgl-hint">Your information is collected on behalf of ruya, the Data Controller, in accordance with their Privacy Policy.</div></div>
+        <label class="toggle"><input type="checkbox" id="decl-terms" onchange="updDeclStatus()"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div><div class="tgl-lbl">I consent to AECB credit check</div><div class="tgl-hint">Allows ruya to perform a credit bureau check for account assessment.</div></div>
+        <label class="toggle"><input type="checkbox" id="decl-aecb" onchange="updDeclStatus()"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div><div class="tgl-lbl">I confirm all information provided is accurate and complete</div><div class="tgl-hint">By submitting, you confirm you are authorised to act on behalf of this company.</div></div>
+        <label class="toggle"><input type="checkbox" id="decl-confirm" onchange="updDeclStatus()"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
+      </div>
+    </div>
+    <div class="footer" id="ft4">
+      <div class="footer-l"><button class="btn-back" onclick="goStep(3)">← Back</button></div>
+      <button class="btn-submit" onclick="submitted()">Submit Application</button>
+    </div>
+  </div>
+
+  </div></div><!-- /page-inner /page-wrap -->
+</div>
+
+<!-- ═══ FATCA MODAL ═══ -->
+<div class="modal-overlay" id="modal-fatca">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">FATCA Self-Certification Form</div><button class="modal-close" onclick="closeModal('modal-fatca')">✕</button></div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Part 1 — U.S. Person Status</div>
+        <p style="font-size:12.5px;color:var(--g5);margin-bottom:12px">Does your company have any U.S. connections? Check all that apply.</p>
+        <div class="checkbox-row"><input type="checkbox" id="fatca-inc-us"><label class="checkbox-lbl" for="fatca-inc-us">Incorporated or registered in the USA</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="fatca-addr-us"><label class="checkbox-lbl" for="fatca-addr-us">U.S. mailing or registered address</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="fatca-tel-us"><label class="checkbox-lbl" for="fatca-tel-us">U.S. telephone number</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="fatca-transfer-us"><label class="checkbox-lbl" for="fatca-transfer-us">Standing instructions to transfer funds to a U.S. account</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="fatca-poa-us"><label class="checkbox-lbl" for="fatca-poa-us">Power of attorney granted to a person with U.S. address</label></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Part 2 — If U.S. connections exist</div>
+        <div class="radio-row" style="margin-bottom:12px">
+          <div class="radio-opt" id="fatca-is-us-yes" onclick="this.classList.add('sel');document.getElementById('fatca-is-us-no').classList.remove('sel');document.getElementById('fatca-w9-block').style.display='';document.getElementById('fatca-w8-block').style.display='none'">
+            <div class="r-dot"></div><div><div class="r-lbl">The company IS a U.S. person</div><div class="r-sub">→ W-9 required</div></div>
+          </div>
+          <div class="radio-opt" id="fatca-is-us-no" onclick="this.classList.add('sel');document.getElementById('fatca-is-us-yes').classList.remove('sel');document.getElementById('fatca-w8-block').style.display='';document.getElementById('fatca-w9-block').style.display='none'">
+            <div class="r-dot"></div><div><div class="r-lbl">The company has U.S. connections but is NOT a U.S. person</div><div class="r-sub">→ W-8BEN-E required</div></div>
+          </div>
+        </div>
+        <div id="fatca-w9-block" style="display:none">
+          <div class="doc-block"><div class="doc-top"><div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info"><div class="doc-name">Form W-9 <span class="doc-badge req">Required</span></div><div class="doc-desc">Please upload the completed and signed IRS Form W-9.</div></div></div><button class="btn-up primary" onclick="return false">↑ Upload</button></div></div>
+        </div>
+        <div id="fatca-w8-block" style="display:none">
+          <div class="doc-block"><div class="doc-top"><div class="doc-left"><div class="doc-ico">📋</div><div class="doc-info"><div class="doc-name">Form W-8BEN-E <span class="doc-badge req">Required</span></div><div class="doc-desc">Please upload the completed and signed IRS Form W-8BEN-E (Certificate of Foreign Status for Entities).</div></div></div><button class="btn-up primary" onclick="return false">↑ Upload</button></div></div>
+        </div>
+        <div id="fatca-no-us-block">
+          <div class="checkbox-row"><input type="checkbox" id="fatca-no-conn"><label class="checkbox-lbl" for="fatca-no-conn">The company has <strong>no U.S. connections</strong> — no FATCA form required.</label></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn-modal-cancel" onclick="closeModal('modal-fatca')">Cancel</button><button class="btn-modal-save" onclick="saveModal('modal-fatca','fatca')">Save</button></div>
+  </div>
+</div>
+
+<!-- ═══ CRS MODAL ═══ -->
+<div class="modal-overlay" id="modal-crs">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">CRS Self-Certification Form</div><button class="modal-close" onclick="closeModal('modal-crs')">✕</button></div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Tax Residency</div>
+        <p style="font-size:12.5px;color:var(--g5);margin-bottom:12px">Under the Common Reporting Standard (CRS), please provide the entity's tax residency information.</p>
+        <div class="fg fg-2">
+          <div class="f-group"><label class="f-label">Country of tax residency <span class="f-req">*</span></label><select class="f-select"><option value="">Select country</option><option>UAE</option><option>India</option><option>UK</option><option>USA</option><option>Other</option></select></div>
+          <div class="f-group"><label class="f-label">TIN / Tax ID number</label><input class="f-input" placeholder="Tax Identification Number"></div>
+        </div>
+        <div class="checkbox-row" style="margin-top:8px"><input type="checkbox" id="crs-no-tin"><label class="checkbox-lbl" for="crs-no-tin">Country does not issue TINs</label></div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Entity Classification</div>
+        <div class="f-group"><label class="f-label">CRS entity type <span class="f-req">*</span></label>
+          <select class="f-select">
+            <option value="">Select type</option>
+            <option>Financial Institution</option>
+            <option>Active Non-Financial Entity (Active NFE)</option>
+            <option>Passive Non-Financial Entity (Passive NFE)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn-modal-cancel" onclick="closeModal('modal-crs')">Cancel</button><button class="btn-modal-save" onclick="saveModal('modal-crs','crs')">Save</button></div>
+  </div>
+</div>
+
+<script>
+const S={step:0,biz:'',bizName:'',legalCode:'',uploaded:{},shCount:1,shActive:0,formDone:{fatca:false,crs:false}};
+
+// init footers on load
+document.addEventListener('DOMContentLoaded',function(){
+  for(let i=1;i<5;i++){const f=document.getElementById('ft'+i);if(f)f.style.display='none';}
+});
+
+/* ── STEP NAV ── */
+function goStep(n){
+  document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n));
+  for(let i=0;i<5;i++){
+    const st=document.getElementById('stp'+i),ln=document.getElementById('ln'+i);
+    if(st){st.className='step'+(i===n?' active':i<n?' done':'');st.querySelector('.sn').innerHTML=i<n?'&#10003;':'<span>'+(i+1)+'</span>';}
+    if(ln)ln.className='step-line'+(i<n?' done':'');
+    const ft=document.getElementById('ft'+i);
+    if(ft)ft.style.display=(i===n)?'flex':'none';
+  }
+  S.step=n;window.scrollTo(0,0);
+  if(n===3) autoAddInitiatorShareholder();
+  if(n===4)buildReview();
+}
+
+/* ── COLLAPSIBLE ── */
+function toggleSection(id){const s=document.getElementById(id);if(!s)return;s.classList.toggle('open');const c=s.querySelector('.col-chevron');if(c)c.textContent=s.classList.contains('open')?'▲':'▼';}
+function doneSection(secId,dotId){const s=document.getElementById(secId);if(s)s.classList.remove('open');const d=document.getElementById(dotId);if(d){d.className='st-dot st-done';d.textContent='✓';}const c=s?.querySelector('.col-chevron');if(c)c.textContent='▼';}
+
+/* ── ROLE / BIZ ── */
+function selRole(el,id){
+  document.querySelectorAll('[onclick^="selRole"]').forEach(r=>r.classList.remove('sel'));
+  el.classList.add('sel');
+  updatePOABlock();
+}
+function updatePOABlock(){
+  const roleEl = document.querySelector('[onclick^="selRole"].sel');
+  const onclickVal = roleEl ? roleEl.getAttribute('onclick') : '';
+  const isAuthPerson = onclickVal.indexOf('449930001') >= 0;
+  const isSignatory = document.getElementById('init-sig-yes')?.checked;
+  const poaBlock = document.getElementById('init-poa-block');
+  const mandatory = document.getElementById('init-poa-mandatory');
+  const optional = document.getElementById('init-poa-optional');
+  if(!poaBlock) return;
+  if(!isAuthPerson){
+    poaBlock.style.display = 'none';
+    return;
+  }
+  poaBlock.style.display = '';
+  if(isSignatory){
+    if(mandatory) mandatory.style.display = '';
+    if(optional) optional.style.display = 'none';
+  } else {
+    if(mandatory) mandatory.style.display = 'none';
+    if(optional) optional.style.display = '';
+  }
+}
+function setInitSignatory(val){
+  updatePOABlock();
+}
+function setInitPOA(val){
+  document.getElementById('init-poa-yes').classList.toggle('sel', val===true);
+  document.getElementById('init-poa-no').classList.toggle('sel', val===false);
+  document.getElementById('init-poa-upload').style.display = val ? '' : 'none';
+}
+function selBiz(sel){
+  if(!sel.value)return;
+  const p=sel.value.split('|');S.biz=p[0];S.bizName=p[1];S.legalCode=p[2];
+  const ch=document.getElementById('biz-chip');ch.textContent=p[1];ch.style.display='inline-block';
+  applyDocMap(p[2]);
+}
+
+// ── DOCUMENT MAP ──
+const DOC_MAP = {
+  '53':{reg:['du-tl'],biz:['du-biz-plan'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '50':{reg:['du-tl','du-part'],biz:['du-biz-plan'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '58':{reg:['du-tl','du-part'],biz:['du-biz-plan'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '64':{reg:['du-tl','du-part'],biz:['du-biz-plan'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '47':{reg:['du-tl'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '59':{reg:['du-tl','du-coi'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '44':{reg:['du-tl','du-coi'],biz:['du-biz-plan'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '70':{reg:['du-tl','du-coi'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '71':{reg:['du-tl','du-coi'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '51':{reg:['du-tl','du-coi'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '52':{reg:['du-tl','du-coi'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '65':{reg:['du-reg'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '66':{reg:['du-reg'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '55':{reg:['du-parent-lic'],biz:['du-biz-plan'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '40':{reg:['du-branch-uae-lic'],biz:['du-parent-share','du-parent-coi','du-parent-moa'],addr:['du-addr-parent','du-addr'],fin:['du-fin'],sh_addr:true},
+  '41':{reg:['du-npo'],biz:['du-charter'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '72':{reg:['du-npo'],biz:['du-charter'],addr:['du-addr'],fin:['du-fin'],sh_addr:true,fin_optional:true},
+  '54':{reg:['du-spv'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '62':{reg:['du-tl'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '61':{reg:['du-tl'],biz:['du-moa','du-moa-amended'],addr:['du-addr'],fin:['du-fin'],sh_addr:true},
+  '46':{reg:['du-gov','du-gov-decree'],biz:['du-gov-order'],addr:[],fin:[],sh_addr:false},
+  '45':{reg:['du-gov','du-gov-decree'],biz:['du-gov-order'],addr:[],fin:[],sh_addr:false},
+  '56':{reg:['du-embassy','du-embassy-decree'],biz:['du-embassy-letter'],addr:['du-addr'],fin:[],sh_addr:false},
+  '57':{reg:['du-init-appr'],biz:['du-moa-draft'],addr:[],fin:['du-fin'],sh_addr:true,fin_optional:true},
+};
+const ALL_DOC_IDS=['du-tl','du-coi','du-reg','du-part','du-spv','du-npo','du-init-appr','du-gov','du-gov-decree','du-embassy','du-embassy-decree','du-parent-lic','du-branch-lic','du-branch-uae-lic','du-moa','du-moa-amended','du-biz-plan','du-share-reg','du-charter','du-gov-order','du-embassy-letter','du-moa-draft','du-parent-share','du-parent-coi','du-parent-moa','du-addr','du-addr-parent','du-fin','du-trust'];
+
+function applyDocMap(code){
+  const map=DOC_MAP[code];
+  ALL_DOC_IDS.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  if(!map)return;
+  const show=[...(map.reg||[]),...(map.biz||[]),...(map.addr||[]),...(map.fin||[])];
+  show.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='';});
+  const vat=document.getElementById('du-vat');
+  if(vat&&document.querySelector('input[name="vat"]:checked')?.value==='yes')vat.style.display='';
+  S.sh_addr=map.sh_addr||false;
+  S.fin_optional=map.fin_optional||false;
+}
+
+/* ── COMMUNICATION ADDRESS TOGGLE ── */
+function toggleCommAddr(checked){const block=document.getElementById('comm-addr-block');if(block)block.style.display=checked?'none':'';}
+
+/* ── VAT TOGGLE ── */
+function vatT(v){document.getElementById('vat-yes').classList.toggle('show',v==='yes');document.getElementById('vat-no').classList.toggle('show',v==='no');}
+function supT(v){document.getElementById('sup-yes').classList.toggle('show',v==='yes');document.getElementById('sup-no').classList.toggle('show',v==='no');}
+function custT(v){document.getElementById('cust-yes').classList.toggle('show',v==='yes');document.getElementById('cust-no').classList.toggle('show',v==='no');}
+function bankT(v){document.getElementById('bank-yes').classList.toggle('show',v==='yes');document.getElementById('bank-no').classList.toggle('show',v==='no');}
+
+/* ── UPLOAD SIM ── */
+function simInitEID(){
+  const btn = document.getElementById('init-eid-btn');
+  const desc = document.getElementById('init-eid-desc');
+  if(btn){btn.innerHTML='<span class="spin"></span>';btn.disabled=true;}
+  setTimeout(()=>{
+    // Simulate extracted data from EID
+    const eidNum = '784-1990-1234567-1';
+    // i-eid field removed
+    // Show read-only display
+    const display = document.getElementById('i-eid-display');
+    const filled = document.getElementById('init-eid-filled');
+    if(display) display.value = eidNum;
+    if(filled) filled.style.display = '';
+    // Mark doc as uploaded
+    const block = document.getElementById('du-init-eid');
+    if(block){block.classList.add('uploaded');const b=block.querySelector('.doc-badge');if(b){b.textContent='✓ Uploaded';b.className='doc-badge done';}}
+    if(desc) desc.textContent = 'Document uploaded. Emirates ID number has been captured.';
+    if(btn){btn.textContent='✓ Uploaded';btn.disabled=false;btn.className='btn-up done';btn.onclick=null;}
+    // Store EID data for shareholder prefill
+    S.initiatorEID = {
+      eidNum,
+      firstName: document.getElementById('i-first')?.value || '',
+      lastName:  document.getElementById('i-last')?.value  || '',
+      email:     document.getElementById('i-email')?.value || '',
+      mobile:    document.getElementById('i-mobile')?.value || '',
+    };
+  }, 900);
+}
+
+const DOCS={
+  tl:{id:'du-tl',btn:'du-tl-btn',fill:()=>{sf('f-coname','Savoll General Trading LLC');sf('f-tlnum','DED-2021-88473');ss('f-emirate-reg','Dubai');sf('f-issauth','DED – Dubai');sf('f-tlissue','2021-03-15');sf('f-tlexpiry','2026-03-14');}},
+  moa:{id:'du-moa',btn:'du-moa-btn',fill:()=>{ss('f-naturebiz','Trading');sf('f-coprfl','Savoll General Trading LLC is a Dubai-based company specializing in the import and export of electronic goods and consumer products.');}},
+  addr:{id:'du-addr',btn:'du-addr-btn',fill:()=>{sf('f-addr1','Office 412, Business Bay Tower, Sheikh Zayed Road');ss('f-city-reg','Dubai');ss('f-emirate','Dubai');sf('f-postal','500001');}},
+  vat:{id:'du-vat',btn:'du-vat-btn',fill:()=>{sf('f-trn','100234567800003');sf('f-vatdate','2022-01-01');}},
+  fin:{id:'du-fin',btn:'du-fin-btn',fill:()=>{sf('f-turnover','2,450,000');sf('f-annincome','380,000');fillSource('Trading / Sales');}},
+};
+function simUp(key){
+  S.uploaded[key]=true;
+  const cfg=DOCS[key];if(!cfg)return;
+  const btn=document.getElementById(cfg.btn);
+  if(btn){btn.innerHTML='<span class="spin"></span>';btn.disabled=true;}
+  setTimeout(()=>{
+    cfg.fill();
+    const cont=document.getElementById(cfg.id);
+    if(cont){cont.classList.add('uploaded');const b=cont.querySelector('.doc-badge');if(b){b.textContent='✓ Uploaded';b.className='doc-badge done';}const d=cont.querySelector('.doc-desc');if(d)d.textContent='Please review the extracted details below and confirm they are correct before continuing.';}
+    if(btn){btn.textContent='✓ Uploaded';btn.disabled=false;btn.className='btn-up done';btn.onclick=null;}
+  },900);
+}
+function sf(id,v){const el=document.getElementById(id);if(!el)return;el.value=v;}
+function ss(id,v){const el=document.getElementById(id);if(!el)return;for(const o of el.options){if(o.text===v||o.value===v){el.value=o.value;break;}}}
+
+/* ── MODAL ── */
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function saveModal(id,key){
+  S.formDone[key]=true;closeModal(id);buildReview();
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#15803d;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999';
+  t.textContent='✓ Form saved successfully';
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
+
+/* ── REVIEW ── */
+function buildReview(){
+  const g=id=>document.getElementById(id)?.value||'—';
+  const roleEl=document.querySelector('[onclick^="selRole"].sel');
+  document.getElementById('rv-role').textContent=roleEl?roleEl.querySelector('.r-lbl')?.textContent:'—';
+  const bs=document.getElementById('biz-select');
+  document.getElementById('rv-biz').textContent=S.bizName||(bs?.options[bs?.selectedIndex]?.text?.split('—')[0]?.trim()||'—');
+  document.getElementById('rv-name').textContent=[g('i-first'),g('i-last')].filter(v=>v&&v!=='—').join(' ')||'—';
+  document.getElementById('rv-email').textContent=g('i-email');
+  document.getElementById('rv-mobile').textContent=g('i-mobile')?'+971 '+g('i-mobile'):'—';
+  document.getElementById('rv-coname').textContent=g('f-coname');
+  document.getElementById('rv-tlnum').textContent=g('f-tlnum');
+  document.getElementById('rv-issauth').textContent=g('f-issauth');
+  const er=document.getElementById('f-emirate-reg');
+  document.getElementById('rv-emirate').textContent=er?.options[er?.selectedIndex]?.text||'—';
+  document.getElementById('rv-tlissue').textContent=g('f-tlissue')||'—';
+  document.getElementById('rv-tlexpiry').textContent=g('f-tlexpiry')||'—';
+  const coDocsEl=document.getElementById('rv-co-docs');
+  const docLabels={tl:'Trade License',moa:'MOA / AOA',addr:'Proof of Address',vat:'VAT Certificate'};
+  coDocsEl.innerHTML=Object.entries(S.uploaded).filter(([k])=>['tl','moa','addr','vat'].includes(k)).map(([k])=>`<span style="font-size:11px;padding:3px 9px;border-radius:20px;background:var(--green-bg);border:1px solid var(--green-b);color:var(--green);font-weight:500">✓ ${docLabels[k]||k}</span>`).join('')||'<span style="font-size:12px;color:var(--g3)">No documents uploaded yet</span>';
+  const srcEl=document.getElementById('f-source');
+  document.getElementById('rv-source').textContent=srcEl?.value||'—';
+  document.getElementById('rv-turnover').textContent=g('f-turnover')?'AED '+g('f-turnover'):'—';
+  document.getElementById('rv-income').textContent=g('f-annincome')?'AED '+g('f-annincome'):'—';
+  document.getElementById('rv-fin-doc').textContent=S.uploaded['fin']?'✓ Uploaded':'Not uploaded';
+  const shEl=document.getElementById('rv-shareholders');
+  if(typeof SH_LIST !== 'undefined' && SH_LIST.length > 0){
+    shEl.innerHTML=SH_LIST.map((sh,i)=>`<div class="rv-grid" style="margin-bottom:10px"><div class="rv-item" style="grid-column:span 2"><div class="rv-key">Person ${i+1}</div><div class="rv-val">${sh.name}</div></div><div class="rv-item"><div class="rv-key">Designation</div><div class="rv-val">${sh.designation||'—'}</div></div><div class="rv-item"><div class="rv-key">Ownership</div><div class="rv-val">${sh.ownership?sh.ownership+'%':'—'}</div></div></div>`).join('');
+  } else {
+    shEl.innerHTML='<p style="font-size:12.5px;color:var(--g3)">No shareholders added</p>';
+  }
+  const complianceDocs=[{k:'fatca',n:'FATCA Self-Certification Form',modal:'modal-fatca'},{k:'crs',n:'CRS Self-Certification Form',modal:'modal-crs'}];
+  document.getElementById('rv-docs').innerHTML=complianceDocs.map(d=>{
+    const done=S.formDone[d.k];
+    return `<div class="rv-doc ${done?'ok':'incomplete'}" ${done?'':` onclick="openModal('${d.modal}')"`}><span>${done?'✓':'📝'}</span><span class="rv-doc-name">${d.n}</span><span class="rv-doc-action">${done?'Completed':'Click to complete →'}</span></div>`;
+  }).join('');
+  const allDone=Object.values(S.formDone).every(v=>v);
+  const dot=document.getElementById('rv-docs-dot');
+  if(dot){dot.className=allDone?'st-dot st-done':'st-dot st-partial';dot.textContent=allDone?'✓':'⏸';}
+}
+
+function updDeclStatus(){
+  const t=document.getElementById('decl-terms')?.checked;
+  const a=document.getElementById('decl-aecb')?.checked;
+  const c=document.getElementById('decl-confirm')?.checked;
+  const dot=document.getElementById('rv-decl-dot');
+  if(!dot)return;
+  if(t&&a&&c){dot.className='st-dot st-done';dot.textContent='✓';}
+  else if(t||a||c){dot.className='st-dot st-partial';dot.textContent='⏸';}
+  else{dot.className='st-dot st-empty';dot.textContent='○';}
+}
+
+function submitted(){
+  const email=document.getElementById('i-email')?.value||'your registered email';
+  const name=document.getElementById('i-first')?.value||'';
+  const ref='KYC-'+Math.floor(Math.random()*90000+10000);
+  document.getElementById('sc4').innerHTML=`
+    <div style="max-width:560px;margin:0 auto;padding:40px 20px;text-align:center">
+
+      <!-- Icon -->
+      <div style="width:72px;height:72px;border-radius:50%;background:#f0fdf4;border:2px solid #86efac;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 24px">✓</div>
+
+      <!-- Heading -->
+      <h1 style="font-size:22px;font-weight:700;letter-spacing:-.3px;margin-bottom:10px;color:#111">
+        ${name ? 'Thank you, '+name+'!' : 'Application submitted!'}
+      </h1>
+      <p style="font-size:14px;color:var(--green);font-weight:600;margin-bottom:8px">
+        We're thrilled to have you on board — exciting things are ahead! 🎉
+      </p>
+      <p style="font-size:13.5px;color:#6b6b6b;line-height:1.7;margin-bottom:6px">
+        Your business account application has been submitted to <strong>ruya Bank</strong> for review.
+      </p>
+      <p style="font-size:13px;color:#9ca3af;margin-bottom:28px">
+        A confirmation has been sent to <strong style="color:#6b6b6b">${email}</strong>
+      </p>
+
+      <!-- Ref number -->
+      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:12px 24px;display:inline-block;margin-bottom:32px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:4px">Application Reference</div>
+        <div style="font-size:15px;font-weight:700;color:#111">${ref}</div>
+      </div>
+
+      <!-- Progress tracker -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:28px 24px;margin-bottom:28px">
+        <!-- Progress bar -->
+        <div style="position:relative;margin-bottom:28px">
+          <div style="height:4px;background:#e5e7eb;border-radius:2px;position:relative">
+            <div style="height:4px;background:linear-gradient(90deg,#15803d,#E8341A);border-radius:2px;width:50%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:0;position:relative">
+            <!-- Step 1 -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex:1">
+              <div style="width:28px;height:28px;border-radius:50%;background:#15803d;display:flex;align-items:center;justify-content:center;margin-top:-16px;border:2px solid #fff;box-shadow:0 0 0 2px #15803d">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div style="font-size:12.5px;font-weight:600;color:#15803d">Application Submitted</div>
+              <div style="font-size:11.5px;color:#6b7280">We've received your application.</div>
+            </div>
+            <!-- Step 2 -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex:1">
+              <div style="width:28px;height:28px;border-radius:50%;background:#fff;border:2px solid #E8341A;display:flex;align-items:center;justify-content:center;margin-top:-16px;box-shadow:0 0 0 3px #fee2e2">
+                <div style="width:8px;height:8px;border-radius:50%;background:#E8341A"></div>
+              </div>
+              <div style="font-size:12.5px;font-weight:600;color:#E8341A">Application Under Review</div>
+              <div style="font-size:11.5px;color:#6b7280">ruya Bank is reviewing your details.</div>
+            </div>
+            <!-- Step 3 -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex:1">
+              <div style="width:28px;height:28px;border-radius:50%;background:#f3f4f6;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;margin-top:-16px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              </div>
+              <div style="font-size:12.5px;font-weight:600;color:#9ca3af">Account Processed</div>
+              <div style="font-size:11.5px;color:#9ca3af">A decision has been made.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What's next -->
+      <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:16px 20px;text-align:left;margin-bottom:24px">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#92400e;margin-bottom:8px">What happens next?</div>
+        <div style="font-size:13px;color:#78350f;line-height:1.7">
+          ruya Bank's team will review your application within <strong>2–3 business days</strong>. 
+          You'll receive an email notification at <strong>${email}</strong> once a decision has been made. 
+          You can also track your application status through Peko Money.
+        </div>
+      </div>
+
+    </div>`;
+}
+
+/* ── SHAREHOLDER PANEL ── */
+let SH_LIST=[];
+let SH_EDITING=-1;
+function openAddShareholder(){SH_EDITING=-1;clearSHPanel();document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='none';document.getElementById('sh-panel').style.display='block';document.getElementById('sh-panel-title').textContent='Person '+(SH_LIST.length+1)+': Enter details';window.scrollTo(0,0);}
+function closeSHPanel(){document.getElementById('sh-panel').style.display='none';if(SH_LIST.length>0){document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='block';}else{document.getElementById('sh-landing').style.display='block';}}
+function clearSHPanel(){const typeSelect=document.getElementById('sh-type-select');if(typeSelect)typeSelect.value='individual';document.getElementById('cs-sh-identity').style.display='';document.getElementById('cs-sh-corp').style.display='none';document.getElementById('cs-sh-resaddr-p').style.display='';document.getElementById('cs-sh-tax-p').style.display='';document.getElementById('sh-res-r').classList.add('sel');document.getElementById('sh-res-nr').classList.remove('sel');document.getElementById('sh-eid-block').style.display='';document.getElementById('sh-ppt-block').style.display='none';document.getElementById('sh-eid-num-row').style.display='';document.getElementById('sh-ppt-num-row').style.display='none';document.getElementById('sh-sig-yes').classList.remove('sel');document.getElementById('sh-sig-no').classList.remove('sel');['sh-p-first','sh-p-last','sh-p-eid','sh-p-ppt','sh-p-email','sh-p-mobile','sh-p-dob','sh-p-issue','sh-p-expiry','sh-ownership'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('sh-designation').value='';['sh-corp-name','sh-corp-tl-no','sh-corp-addr1','sh-corp-addr2','sh-corp-city','sh-corp-pobox','sh-corp-landmark','sh-corp-mobile','sh-corp-email','sh-corp-tin'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-type','sh-corp-country','sh-corp-employees','sh-corp-turnover','sh-corp-emirates'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-startdate','sh-corp-tl-issue','sh-corp-tl-expiry'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const tinTgl=document.getElementById('sh-corp-has-tin');if(tinTgl)tinTgl.checked=false;const tinCond=document.getElementById('sh-corp-tin-cond');if(tinCond)tinCond.classList.remove('show');['st-sh-type','st-sh-identity','st-sh-corp','st-sh-resaddr-p','st-sh-tax-p'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='st-dot st-empty';el.textContent='○';}});}
+function setSHType(type){const isInd=type==='individual';const isCorp=type==='corporate';document.getElementById('cs-sh-identity').style.display=isInd?'':'none';document.getElementById('cs-sh-corp').style.display=isCorp?'':'none';document.getElementById('cs-sh-resaddr-p').style.display=isInd?'':'none';document.getElementById('cs-sh-tax-p').style.display=isInd?'':'none';document.getElementById('sh-signatory-row').style.display=type?'':'none';}
+function setPanelRes(type){document.getElementById('sh-res-r').classList.toggle('sel',type==='resident');document.getElementById('sh-res-nr').classList.toggle('sel',type==='nonresident');document.getElementById('sh-eid-block').style.display=type==='resident'?'':'none';document.getElementById('sh-ppt-block').style.display=type==='nonresident'?'':'none';document.getElementById('sh-eid-num-row').style.display=type==='resident'?'':'none';document.getElementById('sh-ppt-num-row').style.display=type==='nonresident'?'':'none';var aR=document.getElementById('sh-addr-resident');var aNR=document.getElementById('sh-addr-nonresident');if(aR)aR.style.display=type==='resident'?'':'none';if(aNR)aNR.style.display=type==='nonresident'?'':'none';}
+function setSHSignatory(val){ /* native radio handles state */ }
+function toggleCorpTIN(checked){document.getElementById('sh-corp-tin-cond').classList.toggle('show',checked);}
+function onRoleChange(val){
+  // If role is already Authorised Signatory (401), hide the redundant toggle
+  const row = document.getElementById('sh-signatory-row');
+  if(!row) return;
+  if(val === '401'){
+    row.style.display = 'none';
+    // Auto-set as signatory
+    setSHSignatory(true);
+  } else {
+    row.style.display = document.getElementById('sh-type-ind')?.classList.contains('sel') ? '' : 'none';
+  }
+}
+
+function saveShareholder(){const first=document.getElementById('sh-p-first')?.value||'';const last=document.getElementById('sh-p-last')?.value||'';const desigEl=document.getElementById('sh-designation');const designation=desigEl?.options[desigEl?.selectedIndex]?.text||'';const designationCode=desigEl?.value||'';const ownership=document.getElementById('sh-ownership')?.value||'';const isIndividual=document.getElementById('sh-type-select')?.value==='individual';const isResident=document.getElementById('sh-res-r')?.classList.contains('sel');const isSignatory=document.getElementById('sh-sig-yes')?.checked;const name=isIndividual?((first+' '+last).trim()||'Unnamed'):(document.getElementById('sh-corp-name')?.value||'Corporate Entity');const sh={name,designation,designationCode,ownership,isIndividual,isResident,isSignatory};if(!isIndividual){const hasTIN=document.getElementById('sh-corp-has-tin')?.checked||false;sh.corp={companyName:document.getElementById('sh-corp-name')?.value||'',companyType:document.getElementById('sh-corp-type')?.value||'',companyCountry:document.getElementById('sh-corp-country')?.value||'',companyStartDate:document.getElementById('sh-corp-startdate')?.value||'',tradeLicenseNumber:document.getElementById('sh-corp-tl-no')?.value||'',tradeLicenseIssueDate:document.getElementById('sh-corp-tl-issue')?.value||'',tradeLicenseExpiryDate:document.getElementById('sh-corp-tl-expiry')?.value||'',noOfEmployees:document.getElementById('sh-corp-employees')?.value||'',annualTurnOverInAed:document.getElementById('sh-corp-turnover')?.value||'',addressLine1:document.getElementById('sh-corp-addr1')?.value||'',addressLine2:document.getElementById('sh-corp-addr2')?.value||'',city:document.getElementById('sh-corp-city')?.value||'',emirates:document.getElementById('sh-corp-emirates')?.value||'',poBox:document.getElementById('sh-corp-pobox')?.value||'',nearest_Landmark:document.getElementById('sh-corp-landmark')?.value||'',mobileNo:document.getElementById('sh-corp-mobile')?.value||'',emailId:document.getElementById('sh-corp-email')?.value||'',does_user_have_Tax_Identification_Number:hasTIN,tax_Identification_Number:hasTIN?(document.getElementById('sh-corp-tin')?.value||''):'',isAuthorisedSignatory:isSignatory};}if(SH_EDITING>=0){SH_LIST[SH_EDITING]=sh;}else{SH_LIST.push(sh);}renderSHCards();closeSHPanel();}
+
+function autoAddInitiatorShareholder(){
+  // Check if initiator qualifies: Shareholder role OR is authorised signatory
+  const roleEl = document.querySelector('[onclick^="selRole"].sel');
+  const roleId = roleEl?.getAttribute('onclick')?.match(/'([^']+)'\s*\)$/)?.[1] || '';
+  const isShareholder = roleId === '449930000';
+  const isAuthPerson  = roleId === '449930001';
+  const isSignatory   = document.getElementById('init-sig-yes')?.checked;
+
+  if(!isShareholder && !(isAuthPerson || isSignatory)) return;
+  // Don't add twice
+  if(SH_LIST.length > 0 && SH_LIST[0].isInitiator) return;
+
+  const first  = document.getElementById('i-first')?.value  || '';
+  const last   = document.getElementById('i-last')?.value   || '';
+  const email  = document.getElementById('i-email')?.value  || '';
+  const mobile = document.getElementById('i-mobile')?.value || '';
+  const eidNum = document.getElementById('i-eid')?.value    || '';
+
+  // Determine relationship type
+  let designationCode = '405'; // Shareholder default
+  let designation     = 'Shareholder';
+  if(isAuthPerson && !isShareholder){
+    designationCode = '401'; designation = 'Authorised Signatory';
+  }
+
+  const sh = {
+    name: (first+' '+last).trim() || 'Initiator',
+    designation,
+    designationCode,
+    ownership: isShareholder ? '' : '0',
+    isIndividual: true,
+    isResident: true,
+    isSignatory: isSignatory || isAuthPerson,
+    isInitiator: true,   // flag — this card is locked (no delete)
+    prefilled: { eidNum, email, mobile, first, last }
+  };
+
+  // Insert at position 0
+  SH_LIST.unshift(sh);
+  renderSHCards();
+}
+function renderSHCards(){const container=document.getElementById('sh-cards');container.innerHTML=SH_LIST.map((sh,i)=>`<div class="sh-card${sh.isInitiator?' sh-card-initiator':''}"><div class="sh-card-left"><div class="sh-card-av">${sh.isIndividual?sh.name.charAt(0).toUpperCase():'🏢'}</div><div><div class="sh-card-name">${sh.name}${sh.isInitiator?' <span style="font-size:10px;background:var(--red-bg);color:var(--red);padding:2px 7px;border-radius:10px;font-weight:500;margin-left:6px">You</span>':''}${!sh.isIndividual?' <span style="font-size:10px;background:var(--blue-bg);color:var(--blue);padding:2px 7px;border-radius:10px;font-weight:500;margin-left:6px">Corporate</span>':''}</div><div class="sh-card-meta">${sh.designation||'—'}${sh.ownership?' · '+sh.ownership+'%':''}${sh.isSignatory?' · Authorised Signatory':''}</div></div></div><div class="sh-card-actions"><button class="sh-card-edit" onclick="editShareholder(${i})">Edit</button>${sh.isInitiator?'':'<button class="sh-card-del" onclick="deleteShareholder('+i+')">✕</button>'}</div></div>`).join('');document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='block';document.getElementById('sh-panel').style.display='none';}
+function editShareholder(i){SH_EDITING=i;const sh=SH_LIST[i];clearSHPanel();const type=sh.isIndividual?'individual':'corporate';setSHType(type);const ts=document.getElementById('sh-type-select');if(ts)ts.value=type;setPanelRes(sh.isResident?'resident':'nonresident');if(sh.isSignatory!==undefined){
+    const yesR=document.getElementById('sh-sig-yes');
+    const noR=document.getElementById('sh-sig-no');
+    if(yesR) yesR.checked = sh.isSignatory===true;
+    if(noR) noR.checked = sh.isSignatory===false;
+  }document.getElementById('sh-designation').value=sh.designation||'';document.getElementById('sh-ownership').value=sh.ownership||'';if(sh.isIndividual){document.getElementById('sh-p-first').value=sh.name.split(' ')[0]||'';document.getElementById('sh-p-last').value=sh.name.split(' ').slice(1).join(' ')||'';}if(!sh.isIndividual&&sh.corp){const c=sh.corp;const g=id=>document.getElementById(id);g('sh-corp-name').value=c.companyName||'';g('sh-corp-type').value=c.companyType||'';g('sh-corp-country').value=c.companyCountry||'';g('sh-corp-startdate').value=c.companyStartDate||'';g('sh-corp-tl-no').value=c.tradeLicenseNumber||'';g('sh-corp-tl-issue').value=c.tradeLicenseIssueDate||'';g('sh-corp-tl-expiry').value=c.tradeLicenseExpiryDate||'';g('sh-corp-employees').value=c.noOfEmployees||'';g('sh-corp-turnover').value=c.annualTurnOverInAed||'';g('sh-corp-addr1').value=c.addressLine1||'';g('sh-corp-addr2').value=c.addressLine2||'';g('sh-corp-city').value=c.city||'';g('sh-corp-emirates').value=c.emirates||'';g('sh-corp-pobox').value=c.poBox||'';g('sh-corp-landmark').value=c.nearest_Landmark||'';g('sh-corp-mobile').value=c.mobileNo||'';g('sh-corp-email').value=c.emailId||'';const hasTIN=c.does_user_have_Tax_Identification_Number||false;g('sh-corp-has-tin').checked=hasTIN;document.getElementById('sh-corp-tin-cond').classList.toggle('show',hasTIN);g('sh-corp-tin').value=c.tax_Identification_Number||'';}document.getElementById('sh-panel-title').textContent='Edit: '+sh.name;document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='none';document.getElementById('sh-panel').style.display='block';window.scrollTo(0,0);}
+function deleteShareholder(i){SH_LIST.splice(i,1);if(SH_LIST.length===0){document.getElementById('sh-landing').style.display='block';document.getElementById('sh-list').style.display='none';}else{renderSHCards();}}
+
+function toggleSource(btn, val){
+  // single select — deactivate others in same group
+  btn.closest('.source-tags').querySelectorAll('.source-tag').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const hidden = document.getElementById('f-source');
+  if(hidden) hidden.value = val;
+}
+function selectSingle(btn, groupId){
+  // single select for avg transaction tags
+  btn.closest('.source-tags').querySelectorAll('.source-tag').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const hidden = document.getElementById('f-avgtxn');
+  if(hidden) hidden.value = btn.textContent.trim();
+}
+function simEidSide(side){
+  const btnId='sh-eid-'+side+'-btn';
+  const descId='sh-eid-'+side+'-desc';
+  const blockId='sh-eid-'+side+'-block';
+  const btn=document.getElementById(btnId);
+  const desc=document.getElementById(descId);
+  const block=document.getElementById(blockId);
+  if(btn){btn.innerHTML='<span class="spin"></span>';btn.disabled=true;}
+  setTimeout(function(){
+    if(btn){btn.textContent='✓ Uploaded';btn.disabled=false;btn.className='btn-up done';btn.onclick=null;}
+    if(block){block.classList.add('uploaded');var b=block.querySelector('.doc-badge');if(b){b.textContent='✓ Uploaded';b.className='doc-badge done';}}
+    if(desc)desc.textContent='Emirates ID '+(side==='front'?'front':'back')+' uploaded successfully.';
+  },1200);
+}
+
+const SRC_OPTIONS=['Business Earnings','Gifts or Inheritance','Investment Income','Other Specify','Overseas','Property Rental Income','Salary','Sale of Property','Personal savings or investment returns'];
+function srcOptionsHtml(){return'<option value="">Select source of funds</option>'+SRC_OPTIONS.map(o=>'<option>'+o+'</option>').join('');}
+function addSrcRow(){
+  const c=document.getElementById('source-entries');
+  const r=document.createElement('div');
+  r.className='src-row';
+  r.style.cssText='display:flex;align-items:center;border-top:1px solid var(--g1)';
+  r.innerHTML='<select class="f-select" style="border:none;border-radius:0;flex:1;background:transparent;box-shadow:none;outline:none;padding-right:30px" onchange="syncSource()">'+srcOptionsHtml()+'</select><button type="button" onclick="removeSrcRow(this)" style="padding:0 14px;color:var(--g3);background:none;border:none;font-size:18px;cursor:pointer;flex-shrink:0;line-height:1" title="Remove">×</button>';
+  c.appendChild(r);
+  r.querySelector('select').focus();
+  syncSource();
+}
+function removeSrcRow(btn){
+  const c=document.getElementById('source-entries');
+  if(c.querySelectorAll('.src-row').length<=1)return;
+  btn.closest('.src-row').remove();
+  syncSource();
+}
+function syncSource(){
+  const val=Array.from(document.querySelectorAll('#source-entries .src-row select')).map(s=>s.value.trim()).filter(v=>v).join('; ');
+  const h=document.getElementById('f-source');
+  if(h)h.value=val;
+}
+function fillSource(v){
+  const first=document.querySelector('#source-entries .src-row select');
+  if(first){first.value=v;syncSource();}
+}
+
+// Inject upload hint into every doc-block outside the first screen
+(function(){
+  document.querySelectorAll('.doc-block').forEach(function(block){
+    if(block.closest('#sc0')) return;
+    if(!block.querySelector('.upload-hint')){
+      var hint=document.createElement('div');
+      hint.className='upload-hint';
+      hint.style.cssText='font-size:11.5px;color:#1e40af;background:#eff6ff;border:1px solid #bfdbfe;border-radius:5px;padding:7px 11px;margin-top:10px;line-height:1.5';
+      hint.textContent='Please upload the document and review the extracted details before continuing.';
+      block.appendChild(hint);
+    }
+  });
+})();
+
+function addEntry(containerId, label){
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  const entries = container.querySelectorAll('.entry-row');
+  if(entries.length >= 5){alert('Maximum 5 entries allowed.');return;}
+  const first = entries[0];
+  const clone = first.cloneNode(true);
+  clone.querySelectorAll('input').forEach(i=>i.value='');
+  clone.querySelectorAll('select').forEach(s=>s.selectedIndex=0);
+  container.appendChild(clone);
+}
+
+
+</script>
+</body>
+</html>
