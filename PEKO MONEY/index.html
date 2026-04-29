@@ -1286,17 +1286,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
         </div>
       </div>
 
-      <!-- SECTION 2b: CORPORATE ENTITY IDENTITY -->
-      <div class="col-section" id="cs-sh-corp" style="display:none">
-        <div class="col-header" onclick="toggleSection('cs-sh-corp')">
-          <div class="col-left"><div class="st-dot st-empty" id="st-sh-corp">○</div><div class="col-title">Entity Details</div></div>
+      <!-- SECTION 2b-1: CORPORATE — COMPANY INFORMATION -->
+      <div class="col-section" id="cs-sh-corp-info" style="display:none">
+        <div class="col-header" onclick="toggleSection('cs-sh-corp-info')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-corp-info">○</div><div class="col-title">Company Information</div></div>
           <div class="col-chevron">▼</div>
         </div>
         <div class="col-body">
-
-          <!-- Company Information -->
-          <div class="sec-lbl" style="margin-top:14px">Company Information</div>
-          <div class="fg fg-2">
+          <div class="fg fg-2" style="margin-top:14px">
             <div class="f-group span2">
               <label class="f-label">Company name <span class="f-req">*</span></label>
               <input class="f-input" id="sh-corp-name" placeholder="Legal company name">
@@ -1340,28 +1337,31 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
               <label class="f-label">Company start date <span class="f-req">*</span></label>
               <input class="f-input" type="date" id="sh-corp-startdate">
             </div>
-          </div>
-
-          <!-- Trade License -->
-          <div class="sec-lbl">Trade License</div>
-          <div class="fg fg-2">
             <div class="f-group span2">
               <label class="f-label">Trade license number <span class="f-req">*</span></label>
-              <input class="f-input" id="sh-corp-tl-no" placeholder="e.g. CN-12345678">
+              <input class="f-input" id="sh-corp-tl-no" placeholder="e.g. TL-12345X">
             </div>
             <div class="f-group">
-              <label class="f-label">Issue date <span class="f-req">*</span></label>
+              <label class="f-label">Trade license issue date <span class="f-req">*</span></label>
               <input class="f-input" type="date" id="sh-corp-tl-issue">
             </div>
             <div class="f-group">
-              <label class="f-label">Expiry date <span class="f-req">*</span></label>
+              <label class="f-label">Trade license expiry date <span class="f-req">*</span></label>
               <input class="f-input" type="date" id="sh-corp-tl-expiry">
             </div>
           </div>
+          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-corp-info','st-sh-corp-info')">Done ✓</button></div>
+        </div>
+      </div>
 
-          <!-- Business Information -->
-          <div class="sec-lbl">Business Information</div>
-          <div class="fg fg-2">
+      <!-- SECTION 2b-2: CORPORATE — BUSINESS INFORMATION -->
+      <div class="col-section" id="cs-sh-corp-biz" style="display:none">
+        <div class="col-header" onclick="toggleSection('cs-sh-corp-biz')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-corp-biz">○</div><div class="col-title">Business Information</div></div>
+          <div class="col-chevron">▼</div>
+        </div>
+        <div class="col-body">
+          <div class="fg fg-2" style="margin-top:14px">
             <div class="f-group">
               <label class="f-label">No. of employees <span class="f-req">*</span></label>
               <input class="f-input" type="number" id="sh-corp-employees" min="0" placeholder="e.g. 120">
@@ -1371,10 +1371,18 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
               <input class="f-input" type="number" id="sh-corp-turnover" min="0" placeholder="e.g. 5000000">
             </div>
           </div>
+          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-corp-biz','st-sh-corp-biz')">Done ✓</button></div>
+        </div>
+      </div>
 
-          <!-- Registered Address -->
-          <div class="sec-lbl">Registered Address</div>
-          <div class="fg fg-2">
+      <!-- SECTION 2b-3: CORPORATE — REGISTERED ADDRESS -->
+      <div class="col-section" id="cs-sh-corp-addr" style="display:none">
+        <div class="col-header" onclick="toggleSection('cs-sh-corp-addr')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-corp-addr">○</div><div class="col-title">Registered Address</div></div>
+          <div class="col-chevron">▼</div>
+        </div>
+        <div class="col-body">
+          <div class="fg fg-2" style="margin-top:14px">
             <div class="f-group span2">
               <label class="f-label">Address line 1 <span class="f-req">*</span></label>
               <input class="f-input" id="sh-corp-addr1" placeholder="Building name, floor, unit">
@@ -1402,17 +1410,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
             </div>
             <div class="f-group">
               <label class="f-label">P.O. Box</label>
-              <input class="f-input" id="sh-corp-pobox" placeholder="e.g. 12345">
+              <input class="f-input" id="sh-corp-pobox" placeholder="e.g. 345552">
             </div>
             <div class="f-group">
               <label class="f-label">Nearest landmark</label>
-              <input class="f-input" id="sh-corp-landmark" placeholder="e.g. Near Mall of Emirates">
+              <input class="f-input" id="sh-corp-landmark" placeholder="e.g. Near Dubai Mall">
             </div>
-          </div>
-
-          <!-- Contact Information -->
-          <div class="sec-lbl">Contact Information</div>
-          <div class="fg fg-2">
             <div class="f-group">
               <label class="f-label">Mobile number <span class="f-req">*</span></label>
               <div class="phone-wrap"><div class="phone-flag"><span>🇦🇪</span> +971</div><input class="f-input" id="sh-corp-mobile" placeholder="50 XXX XXXX"></div>
@@ -1422,9 +1425,17 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
               <input class="f-input" type="email" id="sh-corp-email" placeholder="contact@company.com">
             </div>
           </div>
+          <div class="done-btn"><button class="btn-done-section" onclick="doneSection('cs-sh-corp-addr','st-sh-corp-addr')">Done ✓</button></div>
+        </div>
+      </div>
 
-          <!-- Tax Information -->
-          <div class="sec-lbl">Tax Information</div>
+      <!-- SECTION 2b-4: CORPORATE — TAX INFORMATION -->
+      <div class="col-section" id="cs-sh-corp-tax" style="display:none">
+        <div class="col-header" onclick="toggleSection('cs-sh-corp-tax')">
+          <div class="col-left"><div class="st-dot st-empty" id="st-sh-corp-tax">○</div><div class="col-title">Tax Information</div></div>
+          <div class="col-chevron">▼</div>
+        </div>
+        <div class="col-body" style="padding-top:10px">
           <div class="toggle-row">
             <div><div class="tgl-lbl">Does this entity have a Tax Identification Number (TIN)?</div></div>
             <label class="toggle"><input type="checkbox" id="sh-corp-has-tin" onchange="toggleCorpTIN(this.checked)"><div class="tgl-track"></div><div class="tgl-thumb"></div></label>
@@ -1433,11 +1444,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:#f2f2f0;color:var(--dar
             <div class="fg fg-2" style="margin-top:8px">
               <div class="f-group">
                 <label class="f-label">Tax Identification Number <span class="f-req">*</span></label>
-                <input class="f-input" id="sh-corp-tin" placeholder="e.g. TIN123456789">
+                <input class="f-input" id="sh-corp-tin" placeholder="e.g. TIN123456789012">
               </div>
             </div>
           </div>
-
           <div class="done-btn"><button class="btn-done-section" onclick="saveShareholder()">Save Shareholder ✓</button></div>
         </div>
       </div>
@@ -2026,8 +2036,8 @@ let SH_LIST=[];
 let SH_EDITING=-1;
 function openAddShareholder(){SH_EDITING=-1;clearSHPanel();document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='none';document.getElementById('sh-panel').style.display='block';document.getElementById('sh-panel-title').textContent='Person '+(SH_LIST.length+1)+': Enter details';window.scrollTo(0,0);}
 function closeSHPanel(){document.getElementById('sh-panel').style.display='none';if(SH_LIST.length>0){document.getElementById('sh-landing').style.display='none';document.getElementById('sh-list').style.display='block';}else{document.getElementById('sh-landing').style.display='block';}}
-function clearSHPanel(){const typeSelect=document.getElementById('sh-type-select');if(typeSelect)typeSelect.value='individual';document.getElementById('cs-sh-identity').style.display='';document.getElementById('cs-sh-corp').style.display='none';document.getElementById('cs-sh-resaddr-p').style.display='';document.getElementById('cs-sh-tax-p').style.display='';document.getElementById('sh-res-r').classList.add('sel');document.getElementById('sh-res-nr').classList.remove('sel');document.getElementById('sh-eid-block').style.display='';document.getElementById('sh-ppt-block').style.display='none';document.getElementById('sh-eid-num-row').style.display='';document.getElementById('sh-ppt-num-row').style.display='none';document.getElementById('sh-sig-yes').classList.remove('sel');document.getElementById('sh-sig-no').classList.remove('sel');['sh-p-first','sh-p-last','sh-p-eid','sh-p-ppt','sh-p-email','sh-p-mobile','sh-p-dob','sh-p-issue','sh-p-expiry','sh-ownership'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('sh-designation').value='';['sh-corp-name','sh-corp-tl-no','sh-corp-addr1','sh-corp-addr2','sh-corp-city','sh-corp-pobox','sh-corp-landmark','sh-corp-mobile','sh-corp-email','sh-corp-tin','sh-corp-employees','sh-corp-turnover'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-type','sh-corp-country','sh-corp-emirates'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-startdate','sh-corp-tl-issue','sh-corp-tl-expiry'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const tinTgl=document.getElementById('sh-corp-has-tin');if(tinTgl)tinTgl.checked=false;const tinCond=document.getElementById('sh-corp-tin-cond');if(tinCond)tinCond.classList.remove('show');['st-sh-type','st-sh-identity','st-sh-corp','st-sh-resaddr-p','st-sh-tax-p'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='st-dot st-empty';el.textContent='○';}});}
-function setSHType(type){const isInd=type==='individual';const isCorp=type==='corporate';document.getElementById('cs-sh-identity').style.display=isInd?'':'none';document.getElementById('cs-sh-corp').style.display=isCorp?'':'none';document.getElementById('cs-sh-resaddr-p').style.display=isInd?'':'none';document.getElementById('cs-sh-tax-p').style.display=isInd?'':'none';document.getElementById('sh-signatory-row').style.display=type?'':'none';}
+function clearSHPanel(){const typeSelect=document.getElementById('sh-type-select');if(typeSelect)typeSelect.value='individual';document.getElementById('cs-sh-identity').style.display='';['cs-sh-corp-info','cs-sh-corp-biz','cs-sh-corp-addr','cs-sh-corp-tax'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById('cs-sh-resaddr-p').style.display='';document.getElementById('cs-sh-tax-p').style.display='';document.getElementById('sh-res-r').classList.add('sel');document.getElementById('sh-res-nr').classList.remove('sel');document.getElementById('sh-eid-block').style.display='';document.getElementById('sh-ppt-block').style.display='none';document.getElementById('sh-eid-num-row').style.display='';document.getElementById('sh-ppt-num-row').style.display='none';document.getElementById('sh-sig-yes').classList.remove('sel');document.getElementById('sh-sig-no').classList.remove('sel');['sh-p-first','sh-p-last','sh-p-eid','sh-p-ppt','sh-p-email','sh-p-mobile','sh-p-dob','sh-p-issue','sh-p-expiry','sh-ownership'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('sh-designation').value='';['sh-corp-name','sh-corp-tl-no','sh-corp-addr1','sh-corp-addr2','sh-corp-city','sh-corp-pobox','sh-corp-landmark','sh-corp-mobile','sh-corp-email','sh-corp-tin','sh-corp-employees','sh-corp-turnover'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-type','sh-corp-country','sh-corp-emirates'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['sh-corp-startdate','sh-corp-tl-issue','sh-corp-tl-expiry'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const tinTgl=document.getElementById('sh-corp-has-tin');if(tinTgl)tinTgl.checked=false;const tinCond=document.getElementById('sh-corp-tin-cond');if(tinCond)tinCond.classList.remove('show');['st-sh-type','st-sh-identity','st-sh-corp-info','st-sh-corp-biz','st-sh-corp-addr','st-sh-corp-tax','st-sh-resaddr-p','st-sh-tax-p'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='st-dot st-empty';el.textContent='○';}});}
+function setSHType(type){const isInd=type==='individual';const isCorp=type==='corporate';document.getElementById('cs-sh-identity').style.display=isInd?'':'none';['cs-sh-corp-info','cs-sh-corp-biz','cs-sh-corp-addr','cs-sh-corp-tax'].forEach(id=>{document.getElementById(id).style.display=isCorp?'':'none';});document.getElementById('cs-sh-resaddr-p').style.display=isInd?'':'none';document.getElementById('cs-sh-tax-p').style.display=isInd?'':'none';document.getElementById('sh-signatory-row').style.display=type?'':'none';}
 function setPanelRes(type){document.getElementById('sh-res-r').classList.toggle('sel',type==='resident');document.getElementById('sh-res-nr').classList.toggle('sel',type==='nonresident');document.getElementById('sh-eid-block').style.display=type==='resident'?'':'none';document.getElementById('sh-ppt-block').style.display=type==='nonresident'?'':'none';document.getElementById('sh-eid-num-row').style.display=type==='resident'?'':'none';document.getElementById('sh-ppt-num-row').style.display=type==='nonresident'?'':'none';var aR=document.getElementById('sh-addr-resident');var aNR=document.getElementById('sh-addr-nonresident');if(aR)aR.style.display=type==='resident'?'':'none';if(aNR)aNR.style.display=type==='nonresident'?'':'none';}
 function setSHSignatory(val){ /* native radio handles state */ }
 function toggleCorpTIN(checked){document.getElementById('sh-corp-tin-cond').classList.toggle('show',checked);}
